@@ -1,4 +1,4 @@
-// (C) 2023 A.Voß, a.voss@fh-aachen.de, kotlin@codebasedlearning.dev
+// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.e_classes
 

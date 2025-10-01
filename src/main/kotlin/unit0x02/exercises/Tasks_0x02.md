@@ -1,4 +1,4 @@
-[© 2024, A.Voß, FH Aachen, codebasedlearning.dev](mailto:kotlin@codebasedlearning.dev)
+[© 2025, A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
 
 # Tasks – Unit0x02
 

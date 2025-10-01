@@ -1,4 +1,4 @@
-// (C) 2024 A.Voß, a.voss@fh-aachen.de, kotlin@codebasedlearning.dev
+// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x02.exercises.proposed_solutions
 
