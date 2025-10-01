@@ -18,7 +18,7 @@ build/
 .idea/modules.xml
 .idea/misc.xml
 
-.local.properties
+local.properties
 
 *.iws
 *.iml
