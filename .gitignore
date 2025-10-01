@@ -9,8 +9,8 @@ build/
 !.idea/codeStyles/
 !.idea/runConfigurations/
 !.idea/libraries/
-!.idea/misc.xml
-!.idea/kotlinc.xml
+#!.idea/misc.xml
+#!.idea/kotlinc.xml
 
 # Ignore other personal or transient files
 .idea/**/workspace.xml
@@ -18,6 +18,8 @@ build/
 .idea/dictionaries/
 .idea/caches/
 .idea/modules.xml
+.idea/misc.xml
+.idea/kotlinc.xml
 
 local.properties
 

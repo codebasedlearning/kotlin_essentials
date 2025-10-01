@@ -5,6 +5,10 @@ plugins {
 group = "dev.codebasedlearning.kotlin"
 version = "1.0-SNAPSHOT"
 
+kotlin {
+    jvmToolchain(23)
+}
+
 repositories {
     mavenCentral()
 }
