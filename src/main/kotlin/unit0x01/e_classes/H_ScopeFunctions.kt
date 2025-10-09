@@ -28,11 +28,11 @@ class Person(var name: String, var age: Int) {                      // simple Pe
     override fun toString() = "{'$name',$age}"
 }
 
-inline fun <T, R> T.doit(block: (T) -> R) {                         // like 'let' w.o. return
+fun <T, R> T.doit(block: (T) -> R) {                         // like 'let' w.o. return
     block(this)
 }
 
-inline fun <T> T.dothis(block: T.() -> Unit): T {                   // like 'apply'
+fun <T> T.dothis(block: T.() -> Unit): T {                   // like 'apply'
     block()
     return this
 }
