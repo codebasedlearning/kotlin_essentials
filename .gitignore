@@ -30,9 +30,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-
 ### Kotlin ###
-.kotlin
+.kotlin/
 
 ### Eclipse ###
 .apt_generated
