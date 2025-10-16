@@ -6,7 +6,7 @@ group = "dev.codebasedlearning.kotlin"
 version = "1.0-SNAPSHOT"
 
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(21)
 }
 
 repositories {

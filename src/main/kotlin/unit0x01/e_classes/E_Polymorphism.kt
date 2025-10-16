@@ -14,6 +14,7 @@ fun main() {
     introduceAdHocObjects()
     introduceSAM()
     introduceDelegationPattern()
+    showAndroidDelegates()
 }
 
 /*======================================================================================================================
@@ -210,4 +211,52 @@ fun introduceDelegationPattern() {
     ab.fly()
     ab.swim()
     println(" 1| lazy ${ab.isFlying}")
+}
+
+// minimal observable state holder
+interface MutableStateInterface<T> {
+    var value: T
+    // fun addListener(listener: (T) -> Unit)       // just the idea of an observer
+}
+
+// simple implementation
+class MyMutableState<T>(initial: T) : MutableStateInterface<T> {
+    // private val listeners = mutableListOf<(T) -> Unit>()
+
+    override var value: T = initial
+        set(newValue) {
+            field = newValue
+            // listeners.forEach { it(newValue) }           // notify all observers
+            println(" a|   State changed -> $newValue")     // or print instead
+        }
+
+    // override fun addListener(listener: (T) -> Unit) { listeners += listener }
+}
+
+// a property delegate so we can write `var count by StateDelegate(...)`
+class StateDelegate<T>(private val state: MutableStateInterface<T>) {
+    operator fun getValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>): T = state.value
+    operator fun setValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>, newValue: T) { state.value = newValue }
+}
+
+// a helper function
+fun <T> myMutableStateOf(initial: T): StateDelegate<T> = StateDelegate(MyMutableState(initial))
+
+fun showAndroidDelegates() {
+    println("\n[Android Delegates]\n---")
+
+    val state = MyMutableState(1)
+
+    println(" 1| Initial state = ${state.value}")
+    state.value++
+    state.value += 5
+    println(" 2| Final state = ${state.value}\n")
+
+    var counter by myMutableStateOf(11)
+
+    // simulate UI using the variable directly
+    println(" 3| Initial counter = $counter")
+    counter++
+    counter += 5
+    println(" 4| Final counter = $counter")
 }

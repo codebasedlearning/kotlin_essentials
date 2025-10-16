@@ -163,6 +163,14 @@ fun viewSequencesAtWork() {
         .filter { it>2 }
         .take(2)
     println("2 | sequence68:   ${sequence46.joinToString(" ")}")
+
+    // sequence {} defines a cold and stateless sequence, every new iteration resets the generator code
+    println("3 | sequence1357: ${sequence1357.joinToString(" ")}")
+
+    // sequence build on top of the iterator is exhausted after first use
+    val iterator = listOf(11, 13, 15, 17).iterator()
+    println("4 | iterator (1):  ${iterator.asSequence().joinToString(" ")}")
+    println("5 | iterator (2): ${iterator.asSequence().joinToString(" ")}") // empty
 }
 
 /*======================================================================================================================
