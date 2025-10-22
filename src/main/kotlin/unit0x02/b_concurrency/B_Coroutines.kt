@@ -23,6 +23,7 @@ fun main() {
     println("Kotlin Essentials -> Concurrency | Coroutines")
 
     introduceCoroutines()
+    understandDispatchers()
     introduceSuspendingFunctions()
     introduceJobs()
     introduceCoroutineScope()
@@ -109,6 +110,66 @@ fun introduceCoroutines() {
 }
 
 /*======================================================================================================================
+[Understand Dispatchers]
+
+When no Dispatcher is given, it inherits the context from the parent context, which is
+'runBlocking' in this case.
+Here, any blocking operation in one coroutine would block the main thread, impacting the
+execution of the other coroutine and causing delays or freezes in the application.
+Note, that outside Android 'Dispatcher.Main' results in an error.
+
+Dispatchers can be specified for launch and/or for runBlocking.
+======================================================================================================================*/
+fun understandDispatchers() {
+    println("\n[Understand Dispatchers]\n---")
+    val mark = ConcurrencyInfo()
+
+    println("${mark("1")} before block 1")
+    runBlocking {
+        launch {
+            println("${mark("a")} coroutine starts in ${threadName()}")
+            Thread.sleep(100) // Blocks the main thread!
+            println("${mark("b")} coroutine ends in ${threadName()}")
+        }
+        launch {
+            println("${mark("c")} coroutine starts in ${threadName()}")
+            Thread.sleep(100) // Blocks the main thread!
+            println("${mark("d")} coroutine ends in ${threadName()}")
+        }
+    }
+
+    println("${mark("2")} before block 2")
+    runBlocking {
+        launch(Dispatchers.Default) {
+            println("${mark("e")} coroutine starts in ${threadName()}")
+            Thread.sleep(100)
+            println("${mark("f")} coroutine ends in ${threadName()}")
+        }
+        launch(Dispatchers.Default) {
+            println("${mark("g")} coroutine starts in ${threadName()}")
+            Thread.sleep(100)
+            println("${mark("h")} coroutine ends in ${threadName()}")
+        }
+    }
+
+    println("${mark("3")} before block 3")
+    runBlocking(Dispatchers.Default) {
+        launch {
+            println("${mark("i")} coroutine starts in ${threadName()}")
+            Thread.sleep(100)
+            println("${mark("j")} coroutine ends in ${threadName()}")
+        }
+        launch {
+            println("${mark("k")} coroutine starts in ${threadName()}")
+            Thread.sleep(100)
+            println("${mark("l")} coroutine ends in ${threadName()}")
+        }
+    }
+
+    println("${mark("4")} after blocking")
+}
+
+/*======================================================================================================================
 [Suspending Functions]
 
 Make it explicit.
@@ -119,22 +180,21 @@ Make it explicit.
 ======================================================================================================================*/
 fun introduceSuspendingFunctions() {
     println("\n[Suspending Functions]\n---")
-    //val time = TimeSource.Monotonic.markNow()
     val mark = ConcurrencyInfo()
 
     // this is a suspending function (keyword 'suspend')
     suspend fun doSomeWork400() {
-        println("${mark("a", coroutineContext)} coroutine started in ${threadName()}, work for 0.4s")
+        println("${mark("a", currentCoroutineContext())} coroutine started in ${threadName()}, work for 0.4s")
         delay(400L) // suspension point!
-        println("${mark("b", coroutineContext)} end coroutine")
+        println("${mark("b", currentCoroutineContext())} end coroutine")
     }
     // another suspending function with two suspension points
     suspend fun doSomeWork200() {
-        println("${mark("c", coroutineContext)} coroutine started in ${threadName()}, work for 0.2s")
+        println("${mark("c", currentCoroutineContext())} coroutine started in ${threadName()}, work for 0.2s")
         delay(200L) // suspension point!
-        println("${mark("d", coroutineContext)} in between in ${threadName()}, work for another 0.2s")
+        println("${mark("d", currentCoroutineContext())} in between in ${threadName()}, work for another 0.2s")
         delay(200L) // suspension point!
-        println("${mark("e", coroutineContext)} end coroutine")
+        println("${mark("e", currentCoroutineContext())} end coroutine")
     }
 
     println("${mark("1")} before blocking")
@@ -172,41 +232,47 @@ Context
 ======================================================================================================================*/
 fun introduceJobs() {
     println("\n[Jobs]\n---")
-    val time = TimeSource.Monotonic.markNow()
+    val mark = ConcurrencyInfo()
 
-    println(" 1| ${time.elapsed()} | before blocking")
+    println("${mark("1")} before blocking")
     runBlocking {
-        println(" a| ${time.elapsed()} | . launch job")
+        println("${mark("2")} launch 'job'")
         val job = launch {
             try {
-                println(" A| ${time.elapsed()} | ... coroutine started")
-                delay(200L)
-                println(" B| ${time.elapsed()} | ... end coroutine")
+                println("${mark("a", currentCoroutineContext())} coroutine started, work for 300ms")
+                delay(300L)
+                println("${mark("b", currentCoroutineContext())} coroutine ended")
             } catch (e: CancellationException) {
-                println(" C| cancelled: '${e.message}'")
+                println("${mark("c", currentCoroutineContext())} coroutine cancelled: '${e.message}'")
             }
         }
-        println(" b| ${time.elapsed()} | . behind launch, work for 0.1s")
+        println("${mark("3")} behind launch, work for 0.1s")
         delay(100L)
-        println(" c| ${time.elapsed()} | . behind work, wait for job")
+        println("${mark("4")} behind work, cancel 'job' or wait for it")
         // wait for job, or cancel (cancel() raises 'StandaloneCoroutine was cancelled')
         // job.join()
-        job.cancel(cause = CancellationException("you are fired"))
-        println(" d| ${time.elapsed()} | . job done")
+        job.cancel(cause = CancellationException("user request"))
+        println("${mark("5")} 'job' done")
 
         // Dispatchers are only part of the truth - it is the context.
         // Join context elements together, here dispatcher and a name.
         val todo = launch(Dispatchers.Default + CoroutineName("todo-coro")) {
-            println(" D| ${time.elapsed()} | ... todo started in ${threadName()}, name: '${this.coroutineContext[CoroutineName.Key]?.name}', dispatcher: '${this.coroutineContext[ContinuationInterceptor]}'")
+            val name = this.coroutineContext[CoroutineName.Key]?.name
+            val dispatcher = this.coroutineContext[ContinuationInterceptor]
+            println("${mark("d", currentCoroutineContext())} 'todo' started in ${threadName()}, name: '${name}', dispatcher: '${dispatcher}'")
+            // see above, suspends until it completes,
             withContext(Dispatchers.IO) {
-                launch { println(" E| ${time.elapsed()} | ... next started in ${threadName()}, dispatcher: '${this.coroutineContext[ContinuationInterceptor]}'") }
+                launch {
+                    val dispatcher2 = this.coroutineContext[ContinuationInterceptor]
+                    println("${mark("e", currentCoroutineContext())} next started in ${threadName()}, dispatcher: '${dispatcher2}'")
+                }
             }
         }
         todo.join()
-        println(" e| ${time.elapsed()} | . todo done")
+        println("${mark("6")} 'todo' done")
     }
 
-    println(" 2| ${time.elapsed()} | after blocking")
+    println("${mark("6")} after blocking")
 }
 
 /*======================================================================================================================
@@ -226,30 +292,30 @@ Care for your children.
 ======================================================================================================================*/
 fun introduceCoroutineScope() {
     println("\n[Coroutine Scope]\n---")
-    val time = TimeSource.Monotonic.markNow()
+    val mark = ConcurrencyInfo()
 
-    println(" 1| ${time.elapsed()} | before blocking")
+    println("${mark("1")} before blocking")
     runBlocking {
-        println(" a| ${time.elapsed()} | . coroutineScope start")
+        println("${mark("2")} coroutineScope start")
         try {
             // start new scope; if canceled, children are also canceled
             coroutineScope {
                 launch {
-                    println(" A| ${time.elapsed()} | ... coroutine started in ${threadName()}, work for 0.2s")
-                    delay(200L)
-                    println(" B| ${time.elapsed()} | ... end coroutine")    // never called
+                    println("${mark("a",currentCoroutineContext())} coroutine started in ${threadName()}, work for 300ms")
+                    delay(300L)
+                    println("${mark("b",currentCoroutineContext())} end coroutine")
                 }
-                println(" b| ${time.elapsed()} | . coro launched, work for 0.1s")
+                println("${mark("c")} coro launched, work for 0.1s")
                 delay(100L)
-                println(" c| ${time.elapsed()} | . cancel coro")
+                println("${mark("d")} cancel coro")
                 cancel()
-                println(" d| ${time.elapsed()} | . coroutineScope end")
+                println("${mark("e")} coroutineScope end")
             }
         } catch (e: CancellationException) {
-            println(" e| ${time.elapsed()} | canceled")
+            println("${mark("f")} canceled")
         }
     }
-    println(" 2| ${time.elapsed()} | after blocking")
+    println("${mark("3")} after blocking")
 }
 
 /*======================================================================================================================
@@ -271,7 +337,7 @@ fun discussConcurrency() {
         runBlocking { repeat(repeats) {
             launch(Dispatchers.Default) { ++counter }
         } }
-    }.let { println(" 1| count $counter, after ${it}s") }
+    }.let { println(" 1| count $counter, after ${it}ms") }
 
     // Mutual Exclusion: only one thread at a time can enter the critical region (withLock);
     // try with lock and unlock are also common.
@@ -283,7 +349,7 @@ fun discussConcurrency() {
         runBlocking { repeat(repeats) {
             launch(Dispatchers.Default) { mutex.withLock { ++counter } }
         } }
-    }.let { println(" 2| count $counter, after ${it}s") }
+    }.let { println(" 2| count $counter, after ${it}ms") }
 
     // V3: Maybe we should better use a scope, should we?
     measureTimeMillis {
@@ -388,6 +454,7 @@ Impressive, do that with threads.
 fun moreOnCoroutines() {
     println("\n[More on Coroutines]\n---")
 
+    // todo - use ConcurrencyInfo
     val time = TimeSource.Monotonic.markNow()
 
     println(" 1| ${time.elapsed()} | start 1000 coroutines and let them work for 0.1s")
@@ -414,6 +481,8 @@ fun moreOnCoroutines() {
 @OptIn(DelicateCoroutinesApi::class)
 fun moreOnExceptionsAndGlobalScope() {
     println("\n[More on Exceptions and GlobalScope]\n---")
+
+    // todo - use ConcurrencyInfo
 
     // define an exception handler for GlobalScope coroutines
     // note that they usually cannot be caught in try-catch, which is the usual approach

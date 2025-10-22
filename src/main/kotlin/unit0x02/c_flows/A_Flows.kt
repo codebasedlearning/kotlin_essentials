@@ -110,10 +110,6 @@ There are hot and cold flows, we start with the frozen one.
 fun introduceColdFlows() = runBlocking {
     println("\n[Cold Flows]\n---")
 
-    // A Flow is an asynchronous data stream; it doesn't have its own state.
-    // Values are generated upon collector's demand, it starts when you collect (or observe) it.
-    // This is what is meant by 'cold'.
-
     fun dataFromFlow() = flow {                                 // Flow<Int>; or short: (1..3).asFlow()
         println(" a| . flow is started")
         for (i in 1..3) {
@@ -129,6 +125,7 @@ fun introduceColdFlows() = runBlocking {
     delay(100L)
     println(" 3| still no activity...")
 
+    // 'collect' is a suspending function
     flow.collect {
         println(" c| . value: $it")
     }
@@ -163,13 +160,14 @@ fun viewColdFlowWithSubscribers() = runBlocking {
         flow.collect { println("${mark("c", currentCoroutineContext())} . consumer 1, value: $it") }
     }
 
-    println("${mark("3")} wait for 0.5s")
+    println("${mark("3")} wait for 500ms")
     delay(500)
 
-    println("${mark("4")} launch consumer 2 (same 'flow')")
+    println("${mark("4")} launch consumer 2 (same 'flow' from beginning)")
     launch {
         flow.collect { println("${mark("d", currentCoroutineContext())} . consumer 2, value: $it") }
     }
+
     println("${mark("5")} wait for all consumers (runBlocking)")
 }
 
@@ -186,7 +184,7 @@ fun viewColdFlowWithSubscribers() = runBlocking {
 
 Difference Cold Flow vs. Hot Flow:
     The main reason that a collect operation on a hot flow (such as SharedFlow or StateFlow) does not stop
-    when the flow is "done" contrasts with a cold flow is due to the differing nature of cold and hot flows:
+    when the flow is "done" is because of the different nature of cold and hot flows:
   - Cold Flows:
     A cold flow starts emitting values only when it is collected.
     Once all values have been emitted and the flow completes, the collection stops.
@@ -227,7 +225,7 @@ fun viewHotFlowWithSubscribers() = runBlocking {
         flow.collect { println("${mark("c", currentCoroutineContext())} . consumer 1, value: $it") }
     }
 
-    println("${mark("3")} wait for 0.5s")
+    println("${mark("3")} wait for 500ms")
     delay(500)
 
     println("${mark("4")} launch consumer 2 (same 'flow')")
@@ -244,9 +242,9 @@ fun viewHotFlowWithSubscribers() = runBlocking {
 /*======================================================================================================================
 [StateFlow with Observers]
 
-  - Here we still have a stream of data but not in the sense of the previous flows.
-    StateFlow implementation models the classical observer-subscriber (publish-subscribe) pattern.
-  - Note, that MutableStateFlow implements the StateFlow interface.
+  - StateFlow is a hot flow with the behavior of remembering the latest emitted state.
+  - MutableStateFlow is an implementation of the StateFlow interface with additional functionality
+    that allows you to manually modify the current state.
   - In applications such as Android models, we usually hide the state as seen in the comment.
   Ref.:
   - https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
@@ -282,7 +280,7 @@ fun viewStateFlowWithObservers() = runBlocking {
         flow.collect { println("${mark("c", currentCoroutineContext())} . consumer 1, value: $it") }
     }
 
-    println("${mark("3")} wait for 0.5s")
+    println("${mark("3")} wait for 500ms")
     delay(500)
 
     println("${mark("4")} launch consumer 2 (same 'flow')")
