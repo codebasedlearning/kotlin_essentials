@@ -1,9 +1,9 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.exercises.proposed_solutions
 
 private fun main() {
-    println("\nProposed solution 'Rubies v3'\n--")
+    println("\nProposed solution 'Rubies v2b'\n--")
     solution()
 }
 

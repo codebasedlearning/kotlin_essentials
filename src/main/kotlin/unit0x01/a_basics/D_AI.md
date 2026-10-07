@@ -1,4 +1,4 @@
-[© 2025, A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
+[© A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
 
 AI (ChatGPT 5) provides many solutions
 

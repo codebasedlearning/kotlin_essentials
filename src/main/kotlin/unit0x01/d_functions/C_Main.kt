@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.d_functions
 
@@ -23,9 +23,9 @@ Building it from inside IntelliJ uses artifacts. You can define them in the 'Mod
     and 'extract to target JAR', e.g. 'essentials.jar'.
   - If successful, you can run it from the 'Terminal' with
     > java -jar out/artifacts/essentials_jar/essentials.jar
-  - You can edit your choices in 'MANIFEST.MF' in 'MATA-INF'.
+  - You can edit your choices in 'MANIFEST.MF' in 'META-INF'.
 
-To run 'main' with arguments inside IntelliJ, but without artefacts, use or create a 'configuration' and pass the
+To run 'main' with arguments inside IntelliJ, but without artifacts, use or create a 'configuration' and pass the
 runtime arguments there.
 ======================================================================================================================*/
 

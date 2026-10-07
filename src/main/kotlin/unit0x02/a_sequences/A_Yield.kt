@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x02.a_sequences
 
@@ -42,7 +42,7 @@ fun discussDataHandling() {
 
     // Q: What is the 'problem' here? Think large and in terms of resources...
     val powersOf2 = powersOf(base=2, maxExponent=4)
-    print("1 | from list: ")
+    print(" 1| from list: ")
     for (n in powersOf2) {
         print("n=$n ")
     }
@@ -60,7 +60,8 @@ A suspended (paused) function - that's new.
   - Under the hood we have an iterator concept that looks for a 'next value' and as long as there is data
     the iterator is not finished. -> see More
   - Suspending a function essentially means having 'suspension points', where a function can be left and
-    resumed after a while. So this concept is similar to suspension functions, but the context and usage is different.
+    resumed after a while. In fact, 'sequence {}' is built on exactly the mechanism of suspending functions:
+    'yield' is a suspending function of the (restricted) 'SequenceScope' - just without threads or dispatchers.
   Ref.:
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence-scope/yield.html
@@ -107,7 +108,7 @@ fun viewListVsSequence() {
         }
     }
 
-    print("1 | from list: ")
+    print(" 1| from list: ")
     for (n in powersOfList(base=2, maxExponent=4)) {
         print("n=$n ")
     }
@@ -123,7 +124,7 @@ fun viewListVsSequence() {
         }
     }
 
-    print("2 | from seq.: ")
+    print(" 2| from seq.: ")
     for (n in powersOfSequence(baseNumber=2, maxExponent=4)) {
         print("n=$n ")
     }
@@ -151,26 +152,26 @@ fun viewSequencesAtWork() {
         yield(7)
     }
 
-    // print("1 | sequence1357:")                               // use joinToString instead
+    // print(" 1| sequence1357:")                               // use joinToString instead
     // for (n in sequence1357) {
     //     print(" $n")
     // }
     // println()
-    println("1 | sequence1357: ${sequence1357.joinToString(" ")}")
+    println(" 1| sequence1357: ${sequence1357.joinToString(" ")}")
 
     val sequence46 = sequence1357
         .map { it+1 }                                           // take a look at the definition
         .filter { it>2 }
         .take(2)
-    println("2 | sequence68:   ${sequence46.joinToString(" ")}")
+    println(" 2| sequence46:   ${sequence46.joinToString(" ")}")
 
     // sequence {} defines a cold and stateless sequence, every new iteration resets the generator code
-    println("3 | sequence1357: ${sequence1357.joinToString(" ")}")
+    println(" 3| sequence1357: ${sequence1357.joinToString(" ")}")
 
     // sequence build on top of the iterator is exhausted after first use
     val iterator = listOf(11, 13, 15, 17).iterator()
-    println("4 | iterator (1):  ${iterator.asSequence().joinToString(" ")}")
-    println("5 | iterator (2): ${iterator.asSequence().joinToString(" ")}") // empty
+    println(" 4| iterator (1):  ${iterator.asSequence().joinToString(" ")}")
+    println(" 5| iterator (2): ${iterator.asSequence().joinToString(" ")}") // empty
 }
 
 /*======================================================================================================================
@@ -217,7 +218,7 @@ fun moreOnUnlimitedSequences() {
 
     val unlimitedSequence = generateSequence(1) { it*2 }            // x:=f(x), x0=seed(here 1)
 
-    print("1 | unlimited sequence, with take 5:   ")
+    print(" 1| unlimited sequence, with take 5:   ")
     for (i in unlimitedSequence.take(5)) {                          // We can only process a finite number of values.
         print("n=$i ")
     }
@@ -228,7 +229,7 @@ fun moreOnUnlimitedSequences() {
 More on [YieldAll]
 
 Composing sequences.
-  - Instead of having a for-loop for each sequence, YieldAll basically does this.
+  - Instead of having a for-loop for each sequence, 'yieldAll' basically does this.
   Ref.:
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence-scope/yield-all.html
 ======================================================================================================================*/
@@ -246,7 +247,7 @@ fun moreOnYieldAll() {
         yieldAll(generateSequence(9) { it+1 })                      // and finally, unlimited, from a generated sequence
     }
 
-    print("1 | combine sequences, take 11:   ")
+    print(" 1| combine sequences, take 11:   ")
     for (i in sequenceBoth.take(3+1+3+1+3)) {
         print("n=$i ")
     }

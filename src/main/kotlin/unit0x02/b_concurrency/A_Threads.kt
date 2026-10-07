@@ -1,14 +1,9 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x02.b_concurrency
 
-import kotlinx.coroutines.CoroutineScope
 import unit0x02.utils.*
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
-import kotlin.random.Random
-import kotlin.time.TimeSource
 
 /*======================================================================================================================
 This snippet shows how to start and join a classical thread.
@@ -47,13 +42,13 @@ fun introduceThreads() {
     println("${mark("2")} observe temperatures for 200ms")
 
     repeat(2) {
-        val temp = readTemperatur()
+        val temp = readTemperature()
         println("${mark("3")} - temperature: ${temp}°C")
     }
 
     println("${mark("4")} observation done, create 'Beth'")
 
-    val beth = thread(start = false) { // do not start directly, you can also name it
+    val beth = thread(start = false, name = "Beth") {   // do not start directly, and name it
         println("${mark("d")} started (as ${threadName()}), observe WiFi Latency for 300ms")
         repeat(3) {
             val latency = readWiFiLatency()

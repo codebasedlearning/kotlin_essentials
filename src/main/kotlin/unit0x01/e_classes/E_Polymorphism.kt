@@ -1,6 +1,9 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.e_classes
+
+import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 /*======================================================================================================================
 Polymorphism Subtyping
@@ -14,17 +17,18 @@ fun main() {
     introduceAdHocObjects()
     introduceSAM()
     introduceDelegationPattern()
-    showAndroidDelegates()
+    showComposeLikeDelegates()
 }
 
 /*======================================================================================================================
 [Inheritance]
 
 Understanding single inheritance.
- - The class you want to inherit from must be 'open'.
+  - The class you want to inherit from must be 'open'.
   - The same applies to the function you want to override.
-  - Default is not open.
-  - Implicit base class is 'Any' - more on that in 'More'.
+  - Default is not open (final).
+  - An 'override' member is open itself; use 'final override' to stop further overriding.
+  - Implicit base class is 'Any' (provides 'equals', 'hashCode' and 'toString').
   - You can override a 'val' property with a 'var' property.
   - Base class initialization is done before derived class initialization.
   Ref.:
@@ -154,9 +158,10 @@ fun introduceSAM() {
     }
     ch.onClick()
 
-    // does not work for Kotlin (in discussion)
+    // does not work for a regular Kotlin interface - by design; declare it as 'fun interface' (Kotlin 1.4+),
+    // like 'IntPredicate' above, then it works
     // val d = ClickHandler { println("Kotlin SAM") }
-    // but for Java (example Runnable)
+    // for Java interfaces SAM conversion works out of the box (example Runnable)
     // interface Runnable {
     //   void run();
     // }
@@ -164,8 +169,8 @@ fun introduceSAM() {
     val rJ = Runnable { println(" 3| Java SAM") }
     rJ.run()
 
-    // because this is Kotlin...
-    val rK: () -> Unit = { println(" 4| Kotlin SAM") }
+    // because this is Kotlin... often a plain function type is all you need (no interface at all)
+    val rK: () -> Unit = { println(" 4| Kotlin function type") }
     rK()
 }
 
@@ -188,20 +193,23 @@ class Plane : CanFly {
     override fun fly() = println(" a| Flying")
 }
 
-class Boot : CanSwim {
+class Boat : CanSwim {
     override fun swim() = println(" b| Swimming")
 }
 
 class AirBoat :
     CanFly by Plane(),          // 'by' delegates as if we have multi-inheritance
-    CanSwim by Boot() {
+    CanSwim by Boat() {
 
     // lazy properties: the value gets computed only upon first access;
     val isFlying: Boolean by lazy {
         true
     }
 
-    // there also observable properties with listeners
+    // there are also observable properties with listeners
+    var altitude: Int by Delegates.observable(0) { _, old, new ->
+        println(" c| . altitude changed $old -> $new")
+    }
 }
 
 fun introduceDelegationPattern() {
@@ -211,6 +219,7 @@ fun introduceDelegationPattern() {
     ab.fly()
     ab.swim()
     println(" 1| lazy ${ab.isFlying}")
+    ab.altitude = 100
 }
 
 // minimal observable state holder
@@ -234,16 +243,18 @@ class MyMutableState<T>(initial: T) : MutableStateInterface<T> {
 }
 
 // a property delegate so we can write `var count by StateDelegate(...)`
+// (alternatively implement the interface 'ReadWriteProperty<Any?, T>')
 class StateDelegate<T>(private val state: MutableStateInterface<T>) {
-    operator fun getValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>): T = state.value
-    operator fun setValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>, newValue: T) { state.value = newValue }
+    operator fun getValue(thisRef: Any?, property: KProperty<*>): T = state.value
+    operator fun setValue(thisRef: Any?, property: KProperty<*>, newValue: T) { state.value = newValue }
 }
 
 // a helper function
 fun <T> myMutableStateOf(initial: T): StateDelegate<T> = StateDelegate(MyMutableState(initial))
 
-fun showAndroidDelegates() {
-    println("\n[Android Delegates]\n---")
+// mimics 'var count by mutableStateOf(0)' from Jetpack Compose (Android and Compose Multiplatform)
+fun showComposeLikeDelegates() {
+    println("\n[Compose-like State Delegates]\n---")
 
     val state = MyMutableState(1)
 

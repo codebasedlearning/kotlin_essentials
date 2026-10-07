@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.b_variables
 
@@ -31,7 +31,7 @@ Understand nullables technically, but also their implications for safe programmi
   - Operator '?:' takes the right-hand value if the left-hand value is null (elvis operator).
   - Operator "!!" asserts that an expression is non-null and gives the non-null type.
   Ref.:
-  - https://kotlinlang.org/docs/keyword-reference.html#special-identifiers
+  - https://kotlinlang.org/docs/keyword-reference.html#operators-and-special-symbols
   - https://kotlinlang.org/docs/null-safety.html
 ======================================================================================================================*/
 fun introduceNullables() {
@@ -41,18 +41,18 @@ fun introduceNullables() {
     // s1 = null                                                    // does not work
     var s2: String? = null                                          // for type 'String?' it is ok
     val s3 = s2 ?: s1                                               // Elvis operator (hair/pompadour), takes the
-    println("1 | s3='$s3'")                                         // right-hand value if the left-hand value is null
+    println(" 1| s3='$s3'")                                         // right-hand value if the left-hand value is null
 
     var i1: Int? = 42                                               // i1 is 42 but can be null
     i1 = null
     val i2 = i1 ?: 1
-    println("2 | i1=$i1, i2=$i2")
+    println(" 2| i1=$i1, i2=$i2")
 
-    val list = if (i2 > 0) listOf(1, 2, 3) else null                // preview: if-expression, type is 'List?'
+    val list = if (i2 > 0) listOf(1, 2, 3) else null                // preview: if-expression, type is 'List<Int>?'
     val len = list?.size ?: 0                                       // ?. means: use op'.' if non-null-reference,
-    println("3 | len=$len")                                         // otherwise expression is null -> hence Elvis-op
+    println(" 3| len=$len")                                         // otherwise expression is null -> hence Elvis-op
 
-    println("4 | list!!=${list!!}")                                 // convert to a non-null type (be absolute sure)
+    println(" 4| list!!=${list!!}")                                 // convert to a non-null type (be absolute sure)
 }
 
 /*======================================================================================================================
@@ -63,12 +63,20 @@ Understanding and use smart-casts of nullable types.
 fun introduceSmartCasts() {
     println("\n[Smart-Casts: Nullables Handling]\n---")
 
-    var list: List<Int>? // = null                              // default
-    list = listOf(1, 2, 3)
-    if (list != null) {
-        println("1 | list.size=${list.size}")                   // smart-cast: list is not-null here, no need for ?.
+    fun printSize(list: List<Int>?) {                           // preview: local function, 'list' may be null
+        if (list != null) {
+            println(" 1| list.size=${list.size}")               // smart-cast: list is not-null here, no need for ?.
+        } else {
+            println(" 2| list is null")
+        }
     }
-}
+    printSize(listOf(1, 2, 3))
+    printSize(null)
+
+    var other: List<Int>?                                       // no default value, must be assigned before use
+    other = listOf(4, 5)
+    println(" 3| other.size=${other.size}")                     // smart-cast after the assignment, the compiler
+}                                                               // knows it is not null (an 'if' would be always true)
 
 /*======================================================================================================================
 More on [Nullables]

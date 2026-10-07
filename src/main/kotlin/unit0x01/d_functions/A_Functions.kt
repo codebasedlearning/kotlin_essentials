@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.d_functions
 
@@ -20,11 +20,14 @@ Defining and calling functions.
   - They can be called with named parameters and defined with default parameters.
   - Name the arguments if there is any chance of confusion as to which argument means what
     e.g. a call with many bool values like f(true, false, true).
-  - Functions without return type are of type 'Unit' (something like 'void').
+  - Functions with a block body and without a return type return 'Unit' (something like 'void');
+    with an expression body the return type is inferred.
+  - Since Kotlin 2.3 'return' may also be used inside expression bodies (explicit return type needed), e.g. 'greet'.
   - Functions are 'first class citizens', i.e. they are objects like other objects. This means they can be assigned,
     used as arguments, etc. And what is more, they can be called.
-  - '::' creates a member reference or a class reference, e.g. 'twice' below.
- Ref.:
+  - '::' creates a callable reference, e.g. the function reference '::twice' below
+    (and 'Foo::class' a class reference).
+  Ref.:
   - https://kotlinlang.org/docs/functions.html
 ======================================================================================================================*/
 
@@ -40,6 +43,8 @@ fun addAll(a: Int = 1, b: Int, c: Int = 2) = a + b + c          // with defaults
 
 fun nothingInReturn() {}                                        // no return type means 'Unit'
 
+fun greet(name: String?): String = "Hello, ${name ?: return "Hello, stranger!"}!"  // 'return' in expr. body (2.3)
+
 fun introduceFunctions() {
     println("\n[Functions]\n---")
 
@@ -52,4 +57,5 @@ fun introduceFunctions() {
     val f: (Int) -> Int = ::twice                               // type is function from Int->Int, e.g. 'twice'
     val g: ((Int) -> Int)? = ::twice                            // like before but nullable
     println(" 6| 5*2=${f(5)}=${g!!(5)}")
+    println(" 7| ${greet("Kotlin")} / ${greet(null)}")
 }

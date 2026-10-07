@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.b_variables
 
@@ -6,10 +6,10 @@ package unit0x01.b_variables
 This snippet is about declaring and defining variables.
 ======================================================================================================================*/
 
-private const val topic = "Val and Var"                         // constant (!) value on top-level (compile-time)
+private const val TOPIC = "Val and Var"                         // constant (!) value on top-level (compile-time)
 
 fun main() {
-    println("\nKotlin Essentials -> Variables | $topic")
+    println("\nKotlin Essentials -> Variables | $TOPIC")
 
     introduceValAndVar()
 }
@@ -21,10 +21,11 @@ Define mutable and read-only variables.
   - 'var': mutable variable.
   - 'val': variable assigned once at runtime. Sometimes this is called 'read-only', but don't get confused, a collection
     declared with 'val' can be modified, see 'list'. If possible, use 'val'.
-  - 'const' declares a compile-time constant, type must be primitive or String; thus it can be inlined
+  - 'const' declares a compile-time constant (top-level, in an object or a companion object), type must be
+    primitive or String; thus it can be inlined. By convention, constants are named in SCREAMING_SNAKE_CASE.
   - Note that even if no type information is given (or inferred), all variables or objects have a type.
     Kotlin is strictly typed. In most cases, specifying the type explicitly is not necessary and should be avoided.
-  - Modifiers at file level (e.g. 'topic'):
+  - Modifiers at file level (e.g. 'TOPIC'):
         'public'=visible everywhere (default)
         'private'=visible in file
         'internal'=visible in module
@@ -32,7 +33,8 @@ Define mutable and read-only variables.
   More:
   - Global variables declared at the top level of a Kotlin file are not really global, but part of a class
     that Kotlin creates named after the file+'Kt'.
-    This way they are addressable from Java, for example: package.snippetKt.the_answer (if it were public).
+    This way they are addressable from Java, for example: 'A_ValsVarsAndTypesKt.TOPIC' (if it were public);
+    a plain public 'val topic' would be accessed via its getter 'A_ValsVarsAndTypesKt.getTopic()'.
   Ref.:
   - https://kotlinlang.org/docs/basic-types.html
   - https://kotlinlang.org/docs/visibility-modifiers.html#packages

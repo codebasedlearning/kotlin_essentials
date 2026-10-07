@@ -1,6 +1,7 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.a_basics
+import java.util.Locale
 import kotlin.math.abs
 
 /*======================================================================================================================
@@ -24,6 +25,9 @@ Build strings with embedded variables and expressions and print to the console.
   More:
   - Format output via '.format'.
   - Nested template expressions are valid.
+  - 'format' uses the default locale, i.e. on a German system '%.2f' gives '3,14'. Pass a Locale (e.g. Locale.ROOT)
+    if you need a fixed, locale-independent format.
+  - Since Kotlin 2.2 there is also 'multi-dollar interpolation' for strings containing many '$', see 'Strings'.
   Ref.:
   - https://kotlinlang.org/docs/strings.html#string-templates
 ======================================================================================================================*/
@@ -35,9 +39,9 @@ fun introduceStringInterpolation() {
     println(" 1| counter=$counter")
 
     val message = " 2| counter+1=${counter + 1}"                // read-only String-variable with template expr.
-    print(message); println(" (correct)")                       // print message, then print '!' with new line
+    print(message); println(" (correct)")                       // print message, then ' (correct)' with new line
 
-    println(" 3| abs(-11)=${abs(-11)}")                         // more complex output
+    println(" 3| abs(-11)=${abs(-11)}")                     // more complex output
     println(
         " 4| when-expression: ${when (counter) {                // even nested expressions can be used
             9 -> "nine($counter)"                               // preview: 'when' see 'control-flow'
@@ -47,7 +51,8 @@ fun introduceStringInterpolation() {
     )
 
     val pi = 3.1415926                                          // type Double
-    println(" 5| pi=$pi, formatted: pi=${"%.2f".format(pi)}")   // specific format
+    println(" 5| pi=$pi, formatted: pi=${"%.2f".format(pi)}")   // specific format, uses the default locale
+    println(" 6| locale-independent: pi=${"%.2f".format(Locale.ROOT, pi)}")    // always '3.14'
 }
 
 /*======================================================================================================================
@@ -65,7 +70,7 @@ Read string from standard input stream, usually the console.
   - 'readln' and 'readlnOrNull' use 'readLine' and are designed as convenience functions in the style of
     other library functions.
   Ref.:
-  - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.io/readln.html
+  - https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.io/readln.html
 ======================================================================================================================*/
 
 fun readTextFromConsole() {

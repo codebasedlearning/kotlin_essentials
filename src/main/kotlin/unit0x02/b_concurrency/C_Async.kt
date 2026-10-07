@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x02.b_concurrency
 
@@ -26,7 +26,8 @@ Give it back to me.
     It stores a computation, but it defers the moment you get the final result; it promises the result sometime
     in the future. But beware, depending on the language and context, the specifics and implementations of
     'Promise' and 'Future' can vary greatly.
-  - For a stream of values consider 'Flows' (or, obsolet from Kotlin 1.5, 'Channels').
+  - For a stream of values consider 'Flows', for communication between coroutines 'Channels'.
+    (Only the old 'BroadcastChannel' became obsolete with kotlinx.coroutines 1.5, replaced by 'SharedFlow'.)
   Ref.:
   - https://kotlinlang.org/docs/composing-suspending-functions.html#concurrent-using-async
   - https://kotlinlang.org/docs/coroutines-and-channels.html#concurrency
@@ -48,7 +49,7 @@ fun introduceAsync() = runBlocking {
 
     var sum = 0
 
-    println(" 1| start calculations (synchronous)")
+    println(" 1| start calculations (sequential)")
     measureTimeMillis {
         val n1 = calcFirstResult()
         val n2 = calcSecondResult()

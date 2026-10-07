@@ -1,8 +1,7 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x02.utils
 
-import kotlinx.coroutines.CoroutineScope
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.CoroutineContext
@@ -11,9 +10,9 @@ import kotlin.time.TimeSource
 data class ConcurrencyData(
     val name: String,
     val color: TerminalColor,
-    val intent: Int,
-    val intentStr:String = " ".repeat(intent),
-    var start: TimeSource.Monotonic.ValueTimeMark = TimeSource.Monotonic.markNow())
+    val indent: Int,
+    val indentStr: String = " ".repeat(indent),
+    val start: TimeSource.Monotonic.ValueTimeMark = TimeSource.Monotonic.markNow())
 
 class ConcurrencyInfo(private val valueNow: TimeSource.Monotonic.ValueTimeMark = TimeSource.Monotonic.markNow()) {
     companion object {
@@ -30,12 +29,12 @@ class ConcurrencyInfo(private val valueNow: TimeSource.Monotonic.ValueTimeMark =
 
     private fun getOrStoreData(name: String) = nameToData.computeIfAbsent(name) {
         val index = currentNiceNameIndex.getAndUpdate { (it + 1) % niceNames.size }
-        niceNames[index].apply { this.start = TimeSource.Monotonic.markNow() }
+        niceNames[index].copy(start = TimeSource.Monotonic.markNow())  // a copy, the shared templates stay untouched
     }
 
     // called by instance("1")
-    // note: instead of calling instances it with () and providing the scope, we could make it a context receiver
-    //       'context(CoroutineScope)', but this language feature is still experimental
+    // note: instead of passing the coroutine context explicitly, we could require it as a context parameter
+    //       'context(scope: CoroutineScope)' (stable since Kotlin 2.4, see 'Context Parameters' in unit0x01)
     operator fun invoke(text: String, context:CoroutineContext?=null): String {
         val name = when {
             context != null -> context.hashCode().toString()
@@ -45,9 +44,9 @@ class ConcurrencyInfo(private val valueNow: TimeSource.Monotonic.ValueTimeMark =
         val saved = getOrStoreData(name)
         val marker = "${text.padStart(2)}|".paintIn(saved.color)
         val elapsed = "${valueNow.elapsed()}|"
-        val intent = saved.intentStr
+        val indent = saved.indentStr
         val ms = saved.start.let { "${saved.name} ${it.elapsed()}|" }.paintIn(saved.color)
-        return  "$marker $elapsed $intent$ms"
+        return  "$marker $elapsed $indent$ms"
     }
 }
 

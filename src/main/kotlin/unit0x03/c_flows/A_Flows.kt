@@ -1,19 +1,18 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
-package unit0x02.c_flows
+package unit0x03.c_flows
 
 /*======================================================================================================================
 This snippet is about flows, a way to return multiple asynchronously calculated values.
-Many of the use cases for Channels are now better served by Flow and SharedFlow, and
-starting from kotlinx.coroutines version 1.5.0; Channel is marked as obsolete in favor of Flow.
+The former 'BroadcastChannel' and 'ConflatedBroadcastChannel' became obsolete with kotlinx.coroutines 1.5,
+their use cases are better served by SharedFlow and StateFlow. Plain 'Channel's are still the tool
+for communication between coroutines.
 ======================================================================================================================*/
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import unit0x02.utils.ConcurrencyInfo
-import unit0x02.utils.elapsed
-import unit0x02.utils.readTemperatur
-import kotlin.time.TimeSource
+import unit0x02.utils.readTemperature
 
 fun main() {
     println("Kotlin Essentials -> Flows | Flows")
@@ -47,7 +46,7 @@ fun motivateFlows() {
     // handling multiple values generated from an external source (simulated)
     // ----------------------------------------------------------------------
 
-    // readTemperatur(): (simple) computation of a value (it takes some time)
+    // readTemperature(): (simple) computation of a value (it takes some time)
 
     // process a single data point
     fun process(data: Int) { print(" $data") }
@@ -56,7 +55,7 @@ fun motivateFlows() {
     // - memory consumption
     // - all values calculated in advance
     // - blocking
-    fun dataFromCollection() = List(3) { readTemperatur() }   // creates all values; =listOf(...)
+    fun dataFromCollection() = List(3) { readTemperature() }   // creates all values; =listOf(...)
 
     print(" 1| dataFromCollection:  [")
     dataFromCollection().forEach { process(it) }
@@ -65,7 +64,7 @@ fun motivateFlows() {
     // V2: compute numbers one by one using sequences
     // + little memory
     // - blocking
-    fun dataFromSequence() = sequence { (0..2).forEach { yield(readTemperatur()) } }  // create one by one
+    fun dataFromSequence() = sequence { (0..2).forEach { yield(readTemperature()) } }  // create one by one
 
     print(" 2| dataFromSequence:    [")
     dataFromSequence().forEach { process(it) }
@@ -73,7 +72,7 @@ fun motivateFlows() {
 
     // (simple) async. computation
     // it behaves like: async { read }.await, but with less overhead
-    suspend fun dataOfAsync(): Int = withContext(Dispatchers.IO) { readTemperatur() }
+    suspend fun dataOfAsync(): Int = withContext(Dispatchers.IO) { readTemperature() }
 
     // V3: compute all at once but in suspending function
     // - memory consumption of all values
@@ -136,7 +135,7 @@ fun introduceColdFlows() = runBlocking {
 [Cold Flow with Subscribers]
 
 Is it an exclusive source of data?
-  - The important message here is that both subscribers see the same data, regardless of the of their start.
+  - The important message here is that both subscribers see the same data, regardless of their start.
 ======================================================================================================================*/
 fun viewColdFlowWithSubscribers() = runBlocking {
     println("\n[Cold Flow with Subscribers]\n---")
@@ -177,7 +176,7 @@ fun viewColdFlowWithSubscribers() = runBlocking {
   - 'shareIn' makes a flow hot. That means, that subscribers get the data from the moment they subscribe.
     Previous data is gone.
     However, you can control the amount of data a new subscriber sees from the past by setting the 'replay' parameter.
-  - SharedFlow' is now the flow type.
+  - 'SharedFlow' is now the flow type.
   Ref.:
   - https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/share-in.html
   - https://medium.com/androiddevelopers/things-to-know-about-flows-sharein-and-statein-operators-20e6ccb2bc74
@@ -245,14 +244,26 @@ fun viewHotFlowWithSubscribers() = runBlocking {
   - StateFlow is a hot flow with the behavior of remembering the latest emitted state.
   - MutableStateFlow is an implementation of the StateFlow interface with additional functionality
     that allows you to manually modify the current state.
-  - In applications such as Android models, we usually hide the state as seen in the comment.
+  - A StateFlow behaves like a SharedFlow with replay = 1, conflation and 'distinctUntilChanged':
+    new subscribers get the latest value first, and equal values are not emitted twice.
+  - In applications such as Android view models, we usually hide the mutable state, see 'CounterModel'
+    (with explicit backing fields, Kotlin 2.4) and the comment at the end.
   Ref.:
   - https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
-  - https://developer.android.com/kotlin/flow/stateflow-and-sharedflow
+  - https://kotlinlang.org/docs/properties.html#explicit-backing-fields
   - https://developer.android.com/jetpack/compose/tutorial
   - https://developer.android.com/jetpack/compose/documentation
   - https://developer.android.com/jetpack/compose/kotlin
 ======================================================================================================================*/
+class CounterModel {
+    val count: StateFlow<Int>                                   // public: a read-only StateFlow
+        field = MutableStateFlow(0)                             // explicit backing field (Kotlin 2.4)
+
+    fun increment() {
+        count.value++                                           // inside the class: a MutableStateFlow
+    }
+}
+
 fun viewStateFlowWithObservers() = runBlocking {
     println("\n[State Flow with Subscribers]\n---")
 
@@ -272,7 +283,7 @@ fun viewStateFlowWithObservers() = runBlocking {
     // flow is of type StateFlow;
     // flow has always a (latest) value (or initialValue)
     val flow = dataFromFlow()
-        .stateIn(scope = this, started = SharingStarted.Lazily, initialValue = -1) // no replay, all get the last value first
+        .stateIn(scope = this, started = SharingStarted.Lazily, initialValue = -1) // like replay=1, all get the last value first
 
     println("${mark("2")} launch consumer 1")
     // we collect all jobs as we need to cancel them, or use a new scope and cancel this
@@ -295,6 +306,12 @@ fun viewStateFlowWithObservers() = runBlocking {
     job1.cancelAndJoin()
     job2.cancelAndJoin()
 
+    val model = CounterModel()
+    model.increment()
+    model.increment()
+    // model.count.value = 42                                   // error, from outside it is a read-only StateFlow
+    println("${mark("8")} model.count: ${model.count.value}")
+
     /* or use StateFlow in this way
 
     scope.launch {
@@ -304,11 +321,10 @@ fun viewStateFlowWithObservers() = runBlocking {
         stateFlow.value = "new value 2"
     }
 
-    or 'convert' a MutableStateFlow to a StateFlow by
+    or 'convert' a MutableStateFlow to a StateFlow by (the classical pattern before Kotlin 2.4)
 
     private val _uiState = MutableStateFlow(1)
-    val uiState: StateFlow<Int>
-        get() = _uiState
+    val uiState: StateFlow<Int> = _uiState.asStateFlow()
      */
 }
 
@@ -316,8 +332,11 @@ fun viewStateFlowWithObservers() = runBlocking {
 [Flow Operators]
 
 Transformation at your finger tips.
-  - Here is a list of the most commonly used (terminal) operators:
-    map, filter, collect, onEach, reduce, take, combine.
+  - Intermediate operators return a new (cold) flow and do nothing on their own:
+    map, filter, transform, onEach, take, combine, ...
+  - Terminal operators are suspending and start the collection:
+    collect, toList, first, reduce, fold, and since kotlinx.coroutines 1.11 'associate', 'associateBy' and
+    'associateWith' to collect into a Map.
   Ref.:
   - https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/
 ======================================================================================================================*/
@@ -335,10 +354,16 @@ fun viewFlowOperators() = runBlocking {
         .filter { it % 2 == 0 }                                 // 4,6, 10, 14,16
         .take(4)
         .collect { println(" a| . $it") }
+
+    val squares = (1..4).asFlow().associateWith { it * it }    // terminal, collects into a Map (coroutines 1.11)
+    println(" 2| squares: $squares")
 }
 
 /*
-ChatGPT
+ChatGPT (an older answer, kept as an exercise: what is wrong or imprecise here?)
+  Hints: Java Streams are neither asynchronous nor 'Reactive Streams' - that would be java.util.concurrent.Flow
+  (Java 9). And Java Streams are lazy as well (nothing happens without a terminal operation),
+  they just cannot be consumed twice.
 
 Kotlin’s Flow is conceptually similar to Java’s Stream, but there are some important differences,
 especially in terms of functionality and usage.

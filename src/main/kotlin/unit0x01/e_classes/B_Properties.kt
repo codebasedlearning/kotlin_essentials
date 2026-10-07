@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.e_classes
 import java.time.LocalDate
@@ -25,8 +25,12 @@ Defining and understanding properties.
   - There are certain circumstances in which 'backing fields' come into existence. A backing field is
     generated for a property if it uses the default implementation of at least one of the accessors,
     or if a custom accessor references it using the 'field' identifier.
+  - Explicit backing fields (stable since Kotlin 2.4): the field may have a more specific type than the property,
+    see 'B3'. Outside the class you see a read-only 'List', inside you work with the 'MutableList'.
+    This replaces the classical pattern 'private val _names = mutableListOf<String>(); val names: List<String> get() = _names'.
   Ref.:
   - https://kotlinlang.org/docs/properties.html
+  - https://kotlinlang.org/docs/properties.html#explicit-backing-fields
 ======================================================================================================================*/
 
 class B1 {
@@ -65,6 +69,15 @@ class B2 {
 
 }
 
+class B3 {
+    val names: List<String>                                     // public type: read-only List
+        field = mutableListOf()                                 // explicit backing field: a MutableList
+
+    fun add(name: String) {
+        names.add(name)                                         // inside the class 'names' is a MutableList
+    }
+}
+
 fun introduceProperties() {
     println("\n[Properties]\n---")
 
@@ -76,4 +89,10 @@ fun introduceProperties() {
     val b2 = B2()
     b2.fullName = "Dr. Smith"
     println(" 2| b2.fullName=${b2.fullName}, b2.age=${b2.age}, b2.bornIn=${b2.bornIn}")
+
+    val b3 = B3()
+    b3.add("Ada")
+    b3.add("Grace")
+    // b3.names.add("Linus")                                    // error, from outside it is a read-only List
+    println(" 3| b3.names=${b3.names}")
 }

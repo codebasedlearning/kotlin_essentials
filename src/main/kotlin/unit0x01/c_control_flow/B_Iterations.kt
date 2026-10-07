@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.c_control_flow
 
@@ -22,11 +22,11 @@ fun main() {
 Working with 'for'.
   - 'for', 'do' and 'while' work as it is known from Java.
   - Same is true for 'break' and 'continue'.
-  - @OptIn(ExperimentalStdlibApi::class) enables the new operator '..<' (instead of 'until').
+  - '..<' (rangeUntil) is the operator form of 'until', stable since Kotlin 1.9.
+  - 'for' over ranges and arrays compiles to a plain counted loop (no iterator object).
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html
 ======================================================================================================================*/
-// @OptIn(ExperimentalStdlibApi::class) // for Kotlin < 1.9
 fun introduceFor() {
     println("\n[Iterations]\n---")
 
@@ -43,7 +43,7 @@ fun introduceFor() {
     }
     println()
 
-    print(" 3| for 1..<3:")
+    print(" 3| for 1..<4: ")
     for (i in 1 ..< 4) {                                        // ..<
         print("i=$i ")
     }
@@ -57,8 +57,8 @@ fun introduceFor() {
     }
     println()
 
-    print(" 5| for i in l: ")                                   // also possible, sometimes faster (why?)
-    listOf(1, 2, 3, 4).forEach { i ->                           // but break and continue difficult
+    print(" 5| l.forEach: ")                                    // also possible (functional style), but
+    listOf(1, 2, 3, 4).forEach { i ->                           // break and continue are not directly available
         print("i=$i ")
     }
     println()
@@ -97,9 +97,14 @@ fun introduceDoWhile() {
 [Iterations]
 
 Working with labels.
-  - Nice to know: if-blocks and labeled breaks.
+  - Nice to know: labeled breaks, and local returns from lambdas.
+  - 'return@label' (or the implicit 'return@forEach') returns from the lambda only, i.e. forEach continues
+    with the next element - it behaves like 'continue'. A plain 'return' would leave the enclosing function.
+  - Non-local 'break' and 'continue' (Kotlin 2.2): inside the lambda of an inline function (like 'run', 'let')
+    they refer to the enclosing loop.
   Ref.:
-  - https://kotlinlang.org/docs/control-flow.html
+  - https://kotlinlang.org/docs/returns.html
+  - https://kotlinlang.org/docs/inline-functions.html#break-and-continue
 ======================================================================================================================*/
 fun introduceLabels() {
     println("\n[More on Control-Flow]\n---")
@@ -117,7 +122,19 @@ fun introduceLabels() {
 
     val numbers = listOf(1, 2, 3, 4, 5)
     numbers.forEach label@ {
-        if (it == 3) return@label                               // Returns to the caller of forEach
-        println("  | it=$it")
+        if (it == 3) return@label                               // returns from the lambda only (like 'continue'),
+        println("  | it=$it")                                   // forEach goes on with the next element
     }
+
+    // non-local break and continue (Kotlin 2.2)
+    val inputs = listOf("1", "x", "3", "stop", "5")
+    var sum = 0
+    for (s in inputs) {
+        val n = s.toIntOrNull() ?: run {                        // 'run' is inline, so 'break' and 'continue'
+            if (s == "stop") break                              // refer to the 'for' loop
+            continue
+        }
+        sum += n
+    }
+    println(" 2| sum of numbers until 'stop': $sum")
 }

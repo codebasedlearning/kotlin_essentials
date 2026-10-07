@@ -1,8 +1,6 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.e_classes
-
-import java.lang.RuntimeException
 
 /*======================================================================================================================
 From here it gets interesting...
@@ -12,6 +10,7 @@ fun main() {
     println("Kotlin Essentials -> Classes | Extensions")
 
     introduceExtensionFunctions()
+    introduceContextParameters()
 }
 
 /*======================================================================================================================
@@ -27,7 +26,7 @@ fun main() {
 ======================================================================================================================*/
 
 fun String.first2(): String {
-    return this.substring(0, 2)
+    return this.substring(0, 2)                                     // crashes for shorter strings, 'take(2)' would not
 }
 
 fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
@@ -43,11 +42,12 @@ fun <T> MutableList<T>.swap(index1: Int, index2: Int) {
 inline fun <reified T : Number> T.square() = when(T::class) {
     Int::class -> this.toInt()*this.toInt()
     Double::class -> this.toDouble()*this.toDouble()
-    else -> throw RuntimeException("type not supported")
+    else -> throw IllegalArgumentException("type not supported")
 }
 
+// 'n' limits the number of processed elements, -1 means all
 fun <T> Collection<T>.myForEach(n: Int = -1, block: (T) -> Unit): Collection<T> =
-    apply { forEach { block(it) } } // or onEach { block(it) }
+    apply { (if (n < 0) this else take(n)).forEach { block(it) } } // for all elements simply: onEach { block(it) }
 //{
 //    this.forEach { block(it) }
 //    return this
@@ -71,12 +71,12 @@ fun introduceExtensionFunctions() {
     println()
 
     // regular call
-    print(" 5| myForEach(lambda): ")
-    list1.myForEach(23, { x: Int -> print("$x ") })
+    print(" 5| myForEach(2, lambda): ")
+    list1.myForEach(2, { x: Int -> print("$x ") })
     println()
 
     print(" 6| myForEach{lambda}: ")
-    // move lambda out of call, use default n:int, 'it' as default name
+    // move lambda out of call, use default n=-1, 'it' as default name
     list1.myForEach { print("$it ") }
     println()
 
@@ -84,4 +84,37 @@ fun introduceExtensionFunctions() {
     val numbers = mutableListOf("one", "two", "three", "four", "five")
 
     println(" 7| ${numbers.map { it.length }.filter { it > 3 }}")
+}
+
+/*======================================================================================================================
+[Context Parameters]
+
+  - An extension function has exactly one receiver ('this'). Context parameters (stable since Kotlin 2.4) let a
+    function require further values from the calling context, e.g. a logger, a transaction or a coroutine scope.
+  - The caller provides them implicitly, e.g. via 'with(logger) { ... }' or the stdlib function 'context(logger) { ... }'.
+  - They replace the former experimental 'context receivers'.
+  Ref.:
+  - https://kotlinlang.org/docs/context-parameters.html
+======================================================================================================================*/
+
+class Logger(private val prefix: String) {
+    fun log(message: String) = println("$prefix $message")
+}
+
+context(logger: Logger)                                             // requires a Logger in the calling context
+fun Int.timesTen(): Int {                                           // ... and is an extension function, too
+    logger.log(". timesTen($this)")
+    return this * 10
+}
+
+fun introduceContextParameters() {
+    println("\n[Context Parameters]\n---")
+
+    with(Logger(" a|")) {                                           // a Logger is now in the context
+        println(" 1| 4.timesTen()=${4.timesTen()}")
+    }
+    context(Logger(" b|")) {                                        // the same, more explicit
+        println(" 2| 5.timesTen()=${5.timesTen()}")
+    }
+    // 6.timesTen()                                                 // error, no Logger in the context
 }

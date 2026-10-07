@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.exercises.proposed_solutions
 
@@ -21,7 +21,7 @@ open class RectangleV1a(description: String, var width: Int, var length: Int)
 
 private fun solution() {
     val rect = RectangleV1a("box v1a", 10, 12)
-    println("1 | $rect")    // => {area:0,description:'box',width:10,length:12} ???
+    println("1 | $rect")    // => {area:0,description:'box v1a',width:10,length:12} ???
     rect.width = 100
     println("2 | $rect")
 }

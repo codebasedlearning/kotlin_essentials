@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.exercises.proposed_solutions
 
@@ -8,7 +8,7 @@ private fun main() {
 }
 
 // Part I: 205
-const val data_part1 = """
+const val DATA_PART1 = """
     3POeQx4
     h5g6srvOA70N
     f8BMx7BgE8y
@@ -16,7 +16,7 @@ const val data_part1 = """
 """
 
 // Part II: 349
-const val data_part2 = """
+const val DATA_PART2 = """
     sixwF1Uone
     9xGHzn3one
     8eightwoUP
@@ -26,8 +26,8 @@ const val data_part2 = """
 """
 
 private fun solution() {
-    println("Sum Example 1: ${solve(data_part1.trimIndent().lines(), true)}")
-    println("Sum Example 2: ${solve(data_part2.trimIndent().lines(), false)}")
+    println("Sum Example 1: ${solve(DATA_PART1.trimIndent().lines(), true)}")
+    println("Sum Example 2: ${solve(DATA_PART2.trimIndent().lines(), false)}")
 }
 
 fun solve(lines: List<String>, part1: Boolean): Int {

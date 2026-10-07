@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.c_control_flow
 
@@ -11,6 +11,9 @@ fun main() {
 
     introduceIf()
     introduceWhen()
+
+    println("\n-- More --")
+    moreOnWhen()
 }
 
 /*======================================================================================================================
@@ -47,10 +50,12 @@ fun introduceIf() {
 }
 
 /*======================================================================================================================
-[If and When]
+[When]
 
-Working with 'if' and 'when' (aka switch-case).
+Working with 'when' (aka switch-case).
   - 'when' is like 'switch-case' with cases more complex.
+  - There is no fall-through, the first matching branch wins.
+  - Used as an expression, 'when' must be exhaustive (usually via 'else').
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html
 ======================================================================================================================*/
@@ -69,4 +74,56 @@ fun introduceWhen() {
         else -> 7
     }
     println(" 4| j=$j")
+}
+
+/*======================================================================================================================
+More on [When]
+
+The real power of 'when'.
+  - Without a subject, 'when' replaces if-else-if chains.
+  - With 'is' you check types, and the subject is smart-cast in the branch.
+  - For sealed types (and enums) the compiler knows all cases, so no 'else' is needed - and if you add
+    a new subtype later, the compiler shows you every 'when' you have to adapt.
+  - Guard conditions (Kotlin 2.2): 'is Circle if shape.radius == 0.0 ->' adds a condition to a branch.
+  - Data-flow based exhaustiveness (Kotlin 2.3): cases excluded before (e.g. by an early return) are not
+    required anymore.
+  Ref.:
+  - https://kotlinlang.org/docs/control-flow.html#guard-conditions-in-when-expressions
+  - https://kotlinlang.org/docs/sealed-classes.html#use-sealed-classes-with-when-expression
+======================================================================================================================*/
+
+sealed interface Shape                                          // all subtypes are known at compile time
+data class Circle(val radius: Double) : Shape
+data class Rect(val width: Double, val height: Double) : Shape
+data object Dot : Shape                                         // a singleton with a nice 'toString'
+
+fun moreOnWhen() {
+    println("\n[More on When]\n---")
+
+    val x = 7
+    when {                                                      // no subject: replaces if-else-if chains
+        x < 0 -> println(" 1| $x is negative")
+        x % 2 == 0 -> println(" 1| $x is even")
+        else -> println(" 1| $x is odd")
+    }
+
+    fun describe(shape: Shape) = when (shape) {                 // sealed: exhaustive without 'else'
+        is Circle if shape.radius == 0.0 -> "a point-like circle"   // guard condition (Kotlin 2.2)
+        is Circle -> "circle, r=${shape.radius}"                // smart-cast to Circle
+        is Rect if shape.width == shape.height -> "square, a=${shape.width}"
+        is Rect -> "rect, ${shape.width}x${shape.height}"
+        Dot -> "just a $shape"
+    }
+    listOf(Circle(0.0), Circle(1.5), Rect(2.0, 2.0), Rect(2.0, 3.0), Dot).forEach {
+        println(" 2| ${describe(it)}")
+    }
+
+    fun area(shape: Shape): Double {
+        if (shape is Dot) return 0.0                            // data-flow based exhaustiveness (Kotlin 2.3):
+        return when (shape) {                                   // the compiler knows 'shape' cannot be 'Dot' here
+            is Circle -> Math.PI * shape.radius * shape.radius
+            is Rect -> shape.width * shape.height
+        }
+    }
+    println(" 3| area(Rect(2,3))=${area(Rect(2.0, 3.0))}, area(Dot)=${area(Dot)}")
 }

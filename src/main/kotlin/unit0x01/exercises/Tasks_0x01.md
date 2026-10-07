@@ -1,4 +1,4 @@
-[© 2025, A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
+[© A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
 
 # Tasks – Unit0x01
 
@@ -52,7 +52,7 @@ Part II
 
 Part III
 - Why does the solution in `_v1a` not work? `_v1b` is a correct version.
-- What are the pros and cons of the `Square` class in `_v2a`?---
+- What are the pros and cons of the `Square` class in `_v2a`?
 
 ---
 
@@ -75,17 +75,18 @@ However, the data structure remains the same, so you can use your solution
 to solve the original puzzle.
 
 > For more information and to enjoy the engaging story, please visit [here](https://adventofcode.com/2023) and
-register for next Christmas!
+register for next Christmas! Note: since 2025 there are only 12 puzzles per year (Dec 1-12) and no global
+leaderboard anymore, only private ones.
 
-The original 25 tasks always consist of two parts, except for the final one if you have completed all previous tasks.
+The original 25 tasks (until 2024) always consist of two parts, except for the final one if you have completed all previous tasks.
 The first part can usually be completed fast with a straightforward approach, prioritising speed over beauty - also
 known as a 'hack'.
 The second part often involves a significant increase in complexity as the problem or solution space explodes.
 In many cases, it is essential to improve your solution concept, for example by developing or using a clever approach
 to reduce the order or number of algorithmic iterations.
-Both tasks should be completed as quickly as possible to earn points and improve the ranking on the leaderboard.
+Back then, both tasks had to be completed as quickly as possible to earn points on the global leaderboard.
 
-Here, we do not have a leaderboard but solving as fast as you can is your first goal.
+Here, we do not have a leaderboard (and neither does AoC anymore), but solving as fast as you can is your first goal.
 The second goal is to improve the approach. Therefore, all tasks now consist of the following sections:
 - Complete the first part (I) as quickly as possible.
 - Same for the second part (II). It is explicitly allowed to simply 'hack' your solution.
@@ -94,7 +95,7 @@ The second goal is to improve the approach. Therefore, all tasks now consist of 
 ### 👉 'Day 01' – Task 'Lemones'
 
 The original story can be found here [Day 01 Trebuchet?!](https://adventofcode.com/2023/day/1).
-Btw: The leaderboard winner solves Parts I _and_ II in 00:02:24, and the top 14 of Part I in under 1 min.
+Btw: In 2023 the leaderboard winner solved Parts I _and_ II in 00:02:24, and the top 14 of Part I in under 1 min.
 
 - Work on the `Lemones.kt` file.
 

@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.e_classes
 
@@ -99,7 +99,9 @@ fun introduceScopeFunctions() {
         .addItem("banana")
         .sumUp()
 
+    println(" 8| mrSmith:$mrSmith, order:${order.productId} ${order.items}")
+
     // more applications: do something with the result (see also Extension Functions)
     val numbers = mutableListOf("one", "two", "three", "four", "five")
-    numbers.map { it.length }.filter { it > 3 }.let { println(" 8| $it") }
+    numbers.map { it.length }.filter { it > 3 }.let { println(" 9| $it") }
 }

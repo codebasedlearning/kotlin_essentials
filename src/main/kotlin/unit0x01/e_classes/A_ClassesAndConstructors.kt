@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.e_classes
 
@@ -25,12 +25,14 @@ Defining classes with constructors and member variables and methods.
   - Always remember that Kotlin ends up being able to run on a JVM and is able to use or expose to the Java world.
     This explains some of the details.
   - The definition of the class as a whole can be much more dense. We will try to emphasise this by comparing
-    the first classes, 'A1'to 'A4'. The main point of this section is the initialisation of an instance, see examples.
+    the first classes, 'A1' to 'A4'. The main point of this section is the initialisation of an instance, see examples.
   - Member variables (or properties, as we'll see later) need to be initialised in one way or another.
     This is part of the 'avoid errors' strategy.
-  - Apart from static elements, member functions are used in the usual way.
-  - Default visibility is 'public'. 'private' and 'protected' work the same as in Java.
-    'internal' is visible in the module, see 'viewValAndVar'.
+  - Member functions are used in the usual way. There is no 'static' in Kotlin, see 'Companions'.
+  - Default visibility is 'public'. 'private' works the same as in Java.
+    'protected' is visible in subclasses only - unlike Java, NOT in the whole package.
+    'internal' is visible in the module, see 'introduceValAndVar'.
+  - Classes (and their members) are final by default, see 'open' in 'Polymorphism'.
   - No 'new' to create an instance.
   - You can also use Java types (if you need to), such as ArrayList<T>.
   Ref.:
@@ -70,7 +72,7 @@ class A2(val n: Int) {                                          // n is member
 class A3(private val k: Int, public var l: Int, m: Int) {
     val n = k*m                                                 // init with 'k' and 'm' is ok
     init {
-        println(" c| . A3::init, n=${this.n}, m=$m, k=${this.k}")   // access of parameter 'm' only from here
+        println(" c| . A3::init, n=${this.n}, m=$m, k=${this.k}")   // param. 'm' only in initializers and init
     }
 }
 

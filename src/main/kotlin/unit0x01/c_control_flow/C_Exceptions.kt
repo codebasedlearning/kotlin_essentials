@@ -1,7 +1,6 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.c_control_flow
-import java.lang.RuntimeException
 
 /*======================================================================================================================
 Obviously we need structural elements to control the program flow. That is what the snippet is for.
@@ -21,11 +20,13 @@ Working with exceptions.
   - 'try-catch' is an expression. The returned value of a try expression is either the last expression
     in the try block or the last expression in the catch block(s).
   - Kotlin does not have checked exceptions.
+  - Idiomatic helpers: 'require(cond)' (IllegalArgumentException), 'check(cond)' (IllegalStateException),
+    'error(msg)', and 'runCatching { }' which wraps the outcome in a 'Result'.
   Ref.:
   - https://kotlinlang.org/docs/exceptions.html
 ======================================================================================================================*/
 fun introduceExceptions() {
-    println("\n[Exceptions]\n--")
+    println("\n[Exceptions]\n---")
 
     try {
         // val n = "123".toInt()
@@ -46,4 +47,7 @@ fun introduceExceptions() {
 
     val n = try { "abc".toInt() } catch (e: NumberFormatException) { null }     // 'try' as expression
     println(" 6| n=$n")
+
+    val result = runCatching { "abc".toInt() }                  // Result<Int>, success or failure
+    println(" 7| value=${result.getOrElse { -1 }}, failure=${result.exceptionOrNull()?.javaClass?.simpleName}")
 }

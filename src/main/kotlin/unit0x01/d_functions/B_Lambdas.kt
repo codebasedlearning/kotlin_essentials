@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.d_functions
 
@@ -13,20 +13,20 @@ fun main() {
 }
 
 /*======================================================================================================================
-[Lambdas / High-order functions]
+[Lambdas / Higher-order functions]
 
 Working with lambdas and trailing lambdas.
   - Use lambdas if you have a local in-place functionality.
     When thinking of assigning a lambda to a (named) variable, consider a local function instead.
   - So-called 'trailing lambda' means providing the last argument as a block of code after the call.
   - Type example: sum: (Int, Int) -> Int
- Ref.:
+  Ref.:
   - https://kotlinlang.org/docs/lambdas.html
 ======================================================================================================================*/
 fun introduceLambdas() {
-    println("\n[Lambdas / High-order functions]\n---")
+    println("\n[Lambdas / Higher-order functions]\n---")
 
-    fun applyOp(x: Int, y: Int, op: (Int, Int) -> Int) = op(x, y)   // local function (high-order function)
+    fun applyOp(x: Int, y: Int, op: (Int, Int) -> Int) = op(x, y)   // local function (higher-order function)
     // val sum: (Int, Int) -> Int = { x, y -> x + y }               // 'sum' references a lambda expression (avoid it)
     // val sum23 = applyOp(2, 3, { x, y -> x + y})                  // calling with in-place lambda
     val sum23 = applyOp(2, 3) { x, y -> x + y }                     // and now with trailing lambda

@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x01.a_basics
 
@@ -27,20 +27,24 @@ fun viewCodingConventions() {
     println("""
          ${" 1"}| Naming
             - packages use lowercase, no underscores ('org.example.project')
+              (this course breaks the rule on purpose: 'unit0x01.a_basics' keeps the snippets sorted)
             - functions, properties and local variables use camel case, no underscores, starting lowercase ('processData')
-            - classes use camel case, starting uppercase ('InputData')
-            - top-level or properties use camel case names ('connectedDevices')
-            - private properties or implementation details use underscore as prefix ('_defaultConnection')
-            - constants use uppercase underscore-separated (screaming snake case) ('MAX_COUNT')
+            - classes and objects use camel case, starting uppercase ('InputData')
+            - constants ('const val', or top-level/object 'val' holding deeply immutable data) use
+              uppercase underscore-separated names (screaming snake case) ('MAX_COUNT')
+            - backing properties, i.e. a private property behind a public one, use an underscore prefix
+              ('private val _elements' behind 'val elements'); other private properties do not
+              (since Kotlin 2.4 'explicit backing fields' often replace this pattern, see 'Properties')
          ${" 2"}| Class layout
             - Property declarations and initializer blocks
-              Simple read-only properties in one line, otherwise set and get separate lines")
+            - Secondary constructors
             - Method declarations
             - Companion object
-            - implement members same order as interface
+            - implement members in the same order as in the interface
          ${" 3"}| Rules
+            - Simple read-only properties in one line, otherwise getter and setter on separate lines
             - Omit semicolons whenever possible
             - Prefer using expression bodies
-            - Use named argument syntax for parameters unless meaning is clear from context
+            - Use named arguments for Boolean or same-typed parameters, unless the meaning is clear from context
         """.trimIndent())
 }

@@ -1,4 +1,4 @@
-// (C) 2025 A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
+// (C) A.Voß, a.voss@fh-aachen.de, info@codebasedlearning.dev
 
 package unit0x02.exercises
 
@@ -10,7 +10,7 @@ package unit0x02.exercises
 //import kotlinx.coroutines.runBlocking
 
 private fun main() {
-    println("\nProposed solution 'Magmas'\n--")
+    println("\nSolution 'Magmas'\n--")
 
     println("1 | start processing")
     // ...

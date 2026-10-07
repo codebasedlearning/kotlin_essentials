@@ -1,4 +1,4 @@
-[© 2025, A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
+[© A.Voß, FH Aachen, codebasedlearning.dev](mailto:info@codebasedlearning.dev)
 
 # Tasks – Unit0x02
 
@@ -36,7 +36,7 @@ b | download file no 3 completed after 1300ms
 
 
 ### 👉 Task 'Magmas'
-- 
+
 - Work on the task in the prepared file `Magmas.kt` (but don't check it in).
 - Complete the function `processNumbers` (and `main`) that generates a sequence of integers from 1 to 100, 
   filters out the odd numbers, squares the remaining numbers, takes the first five of them and prints them out.
