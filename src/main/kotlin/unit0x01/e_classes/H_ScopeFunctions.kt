@@ -19,6 +19,9 @@ fun main() {
   - Basically, these functions all perform the same action: execute a block of code on an object.
   - What's different is how this object becomes available inside the block and what the result
     of the whole expression is.
+  - A receiver is the object in whose context a function is executed. Its members can be accessed
+    directly, without explicitly naming the object.
+    A receiver is similar to an implicit first argument.
   Ref.:
   - https://kotlinlang.org/docs/scope-functions.html
 ======================================================================================================================*/
@@ -28,10 +31,14 @@ class Person(var name: String, var age: Int) {                      // simple Pe
     override fun toString() = "{'$name',$age}"
 }
 
-fun <T, R> T.doit(block: (T) -> R) {                         // like 'let' w.o. return
-    block(this)
+// doit has a receiver of type T, accessible as this.
+// block has no receiver. It receives T as an ordinary parameter, accessible as it.
+fun <T, R> T.doit(block: (T) -> R): R {                         // like 'let' w.o. return
+    return block(this)
 }
 
+// dothis has a receiver of type T.
+// block also has a receiver of type T.
 fun <T> T.dothis(block: T.() -> Unit): T {                   // like 'apply'
     block()
     return this

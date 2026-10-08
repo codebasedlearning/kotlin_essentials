@@ -48,10 +48,6 @@ inline fun <reified T : Number> T.square() = when(T::class) {
 // 'n' limits the number of processed elements, -1 means all
 fun <T> Collection<T>.myForEach(n: Int = -1, block: (T) -> Unit): Collection<T> =
     apply { (if (n < 0) this else take(n)).forEach { block(it) } } // for all elements simply: onEach { block(it) }
-//{
-//    this.forEach { block(it) }
-//    return this
-//}
 
 fun introduceExtensionFunctions() {
     println("\n[Extension Functions]\n---")

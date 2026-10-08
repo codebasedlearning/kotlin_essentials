@@ -85,6 +85,7 @@ The real power of 'when'.
   - For sealed types (and enums) the compiler knows all cases, so no 'else' is needed - and if you add
     a new subtype later, the compiler shows you every 'when' you have to adapt.
   - Guard conditions (Kotlin 2.2): 'is Circle if shape.radius == 0.0 ->' adds a condition to a branch.
+    (Basically this is an &&, but think of the syntax explicitly separates matching from guarding.)
   - Data-flow based exhaustiveness (Kotlin 2.3): cases excluded before (e.g. by an early return) are not
     required anymore.
   Ref.:

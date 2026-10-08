@@ -38,8 +38,24 @@ fun <T : Number> inc(x: T) = x.toInt() + 1                          // a generic
 fun <T> maxOf3(a: T, b: T, c: T): T where T : Comparable<T> =    // constraint with 'where'
     maxOf(a, maxOf(b, c))
 
-fun interface Producer<out T> { fun produce(): T }                  // 'out': T is only returned
-fun interface Consumer<in T> { fun consume(item: T) }               // 'in': T is only taken
+/*
+open class Animal
+class Dog : Animal()
+
+out T — Covariance
+    val dogs: Producer<Dog> = Producer { Dog() }
+    val animals: Producer<Animal> = dogs  // OK
+A producer of dogs can safely be used wherever a producer of animals is expected.
+
+in T — Contravariance
+    val animals: Consumer<Animal> = Consumer { println(it) }
+    val dogs: Consumer<Dog> = animals  // OK
+A consumer capable of accepting any animal can certainly accept dogs.
+*/
+
+fun interface Producer<out T> { fun produce(): T }                  // 'out': T is only returned (Covariance)
+fun interface Consumer<in T> { fun consume(item: T) }               // 'in': T is only taken (Contravariance)
+
 
 inline fun <reified T : Any> typeName() = T::class.simpleName             // T is known at runtime (reified)
 

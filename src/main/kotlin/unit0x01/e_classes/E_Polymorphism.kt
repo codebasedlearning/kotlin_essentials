@@ -122,6 +122,9 @@ fun introduceAdHocObjects() {
 /*======================================================================================================================
 [SAM] Single Abstract Methods.
 
+  - The main difference is that a fun interface is a functional interface (SAM interface),
+    meaning it has exactly one abstract method and supports SAM conversion: you can implement
+    it directly using a lambda.
   Ref.:
   - https://kotlinlang.org/docs/fun-interfaces.html#sam-conversions
 ======================================================================================================================*/
@@ -139,7 +142,7 @@ interface ClickHandler {
 fun introduceSAM() {
     println("\n[SAM - Single Abstract Methods]\n---")
 
-    val isEven1 = object : IntPredicate {
+    val isEven1 = object : IntPredicate {       // see also ClickHandler below
         override fun check(i: Int): Boolean {
             return i % 2 == 0
         }
@@ -202,6 +205,9 @@ class AirBoat :
     CanSwim by Boat() {
 
     // lazy properties: the value gets computed only upon first access;
+    // 'by' delegates property access, and 'lazy' provides the delegate object;
+    // since isFlying is a val, only reading is delegated;
+    // the value is computed once and cached.
     val isFlying: Boolean by lazy {
         true
     }

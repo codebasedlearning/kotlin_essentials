@@ -21,7 +21,7 @@ fun collectEvenNumbersUpTo(n: Int): List<Int> {
     println("-> Start searching...")
     val result = mutableListOf<Int>()
 
-    // lets collect in an overcomplicated loops
+    // let's collect in an overcomplicated loop
     (0..n).forEachIndexed { index, value ->
         when {
             value.isEvenFancy() -> result.add(value)

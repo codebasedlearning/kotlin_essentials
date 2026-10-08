@@ -24,6 +24,11 @@ Structure:
   - There are also exercises and suggested solutions in folder 'exercises'.
     Feel free to solve the puzzles described in 'Tasks_*.md'.
   - Task names are candy names, see: https://www.fantasynamegenerators.com/candy-names.php
+
+Details:
+  - There are more ways to run a Kotlin program:
+    - in script mode (extension kts), no main function is required
+    - in REPL mode (Read-Eval-Print Loop)
 ======================================================================================================================*/
 
 fun main() {

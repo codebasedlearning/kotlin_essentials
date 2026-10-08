@@ -22,11 +22,13 @@ Defining and calling functions.
     e.g. a call with many bool values like f(true, false, true).
   - Functions with a block body and without a return type return 'Unit' (something like 'void');
     with an expression body the return type is inferred.
+    (Unit is particularly useful with generics, no special handling of a void return type is required.)
   - Since Kotlin 2.3 'return' may also be used inside expression bodies (explicit return type needed), e.g. 'greet'.
   - Functions are 'first class citizens', i.e. they are objects like other objects. This means they can be assigned,
     used as arguments, etc. And what is more, they can be called.
   - '::' creates a callable reference, e.g. the function reference '::twice' below
     (and 'Foo::class' a class reference).
+    (This also works for properties, constructors, member functions and so on.)
   Ref.:
   - https://kotlinlang.org/docs/functions.html
 ======================================================================================================================*/

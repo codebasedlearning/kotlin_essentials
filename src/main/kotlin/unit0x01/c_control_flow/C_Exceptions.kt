@@ -24,6 +24,14 @@ Working with exceptions.
     'error(msg)', and 'runCatching { }' which wraps the outcome in a 'Result'.
   Ref.:
   - https://kotlinlang.org/docs/exceptions.html
+
+Result:
+  - e.g. val result = runCatching { "123".toInt() }
+  - runCatching executes the lambda and captures its outcome:
+    - Success: Returns Result containing the computed value
+    - Failure: Returns Result containing the thrown exception.
+  - members like isSuccess, isFailure, getOrNull(), getOrDefault(),
+    getOrElse(), getOrThrow(), exceptionOrNull()
 ======================================================================================================================*/
 fun introduceExceptions() {
     println("\n[Exceptions]\n---")

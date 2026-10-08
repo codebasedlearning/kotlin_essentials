@@ -22,6 +22,8 @@ fun main() {
     Note that even though the members of companion objects look like static members in other languages,
     at runtime those are still instance members of real objects, and can, for example, implement interfaces.
   - If Java code should see real static members, use '@JvmStatic', '@JvmField' or 'const'.
+  - A companion object is a real object, so it can implement interfaces, inherit from classes,
+    and be passed around as a value.
   Ref.:
   - https://kotlinlang.org/docs/object-declarations.html#companion-objects
 ======================================================================================================================*/
