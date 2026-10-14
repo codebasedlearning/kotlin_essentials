@@ -2,9 +2,10 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Classes are a huge topic. We will start by looking at classes, properties, and methods.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Classes and Constructors")
@@ -15,8 +16,9 @@ fun main() {
     moreOnClassesAndConstructors()
 }
 
-/*======================================================================================================================
-[Classes and Constructors]
+/*---- Content ----*/
+
+/*--- Classes and Constructors ---
 
 Defining classes with constructors and member variables and methods.
   - First of all, your understanding of constructors, members and modifiers will remain the same
@@ -38,7 +40,7 @@ Defining classes with constructors and member variables and methods.
   Ref.:
   - https://kotlinlang.org/docs/classes.html
   - https://kotlinlang.org/docs/classes.html#secondary-constructors
-======================================================================================================================*/
+*/
 
 // a simple valid Kotlin class - but not Kotlin-like (compare to A2)
 class A1 {
@@ -93,9 +95,8 @@ fun introduceClassesAndConstructors() {
 }
 
 
-/*======================================================================================================================
-More on [Classes and Constructors] - more constructors and inits
-======================================================================================================================*/
+/*--- More on Classes and Constructors --- */
+
 class A5(val n: Int) {
     init {                                                      // first init block for more logic
         println(" a| . A5::init, n=${this.n}")

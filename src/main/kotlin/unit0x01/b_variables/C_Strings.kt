@@ -5,9 +5,10 @@ package unit0x01.b_variables
 import kotlin.io.encoding.Base64
 import kotlin.uuid.Uuid
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet is about strings.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("\nKotlin Essentials -> Variables | Strings")
@@ -19,8 +20,9 @@ fun main() {
     moreOnStringUtilities()
 }
 
-/*======================================================================================================================
-[Strings]
+/*---- Content ----*/
+
+/*--- Strings ---
 
 Working with strings.
   - Nothing special here, strings behave like Java strings. It is a reference type and an immutable
@@ -38,8 +40,7 @@ Working with strings.
   Ref.:
   - https://kotlinlang.org/docs/strings.html
   - Definitions in Strings.kt
-======================================================================================================================*/
-
+*/
 fun introduceStrings() {
     println("\n[Strings]\n---")
 
@@ -55,11 +56,7 @@ fun introduceStrings() {
     """.replaceIndent(" "))
 }
 
-/*======================================================================================================================
-More on [Strings]
-
-Common string operations.
-======================================================================================================================*/
+/*--- More on [Strings] --- Common string operations. */
 fun moreOnStrings() {
     println("\n[More on Strings]\n---")
 
@@ -99,15 +96,14 @@ fun moreOnStrings() {
     println(" 7| $schema")
 }
 
-/*======================================================================================================================
-More on [String Utilities]
+/*--- More on String Utilities ---
 
 Some newer stdlib helpers around strings and bytes.
   - Base64 and HexFormat are stable since Kotlin 2.2, Uuid since Kotlin 2.4.
   Ref.:
   - https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.io.encoding/-base64/
   - https://kotlinlang.org/docs/uuids.html
-======================================================================================================================*/
+*/
 fun moreOnStringUtilities() {
     println("\n[More on String Utilities]\n---")
 

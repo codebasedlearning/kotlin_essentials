@@ -2,12 +2,13 @@
 
 package unit0x03.c_flows
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet is about flows, a way to return multiple asynchronously calculated values.
 The former 'BroadcastChannel' and 'ConflatedBroadcastChannel' became obsolete with kotlinx.coroutines 1.5,
 their use cases are better served by SharedFlow and StateFlow. Plain 'Channel's are still the tool
 for communication between coroutines.
-======================================================================================================================*/
+*/
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -25,9 +26,9 @@ fun main() {
     viewFlowOperators()
 }
 
-/*======================================================================================================================
-[Motivation]
+/*---- Content ----*/
 
+/*--- Motivation ---
 Different ways of providing multiple calculated values.
   - In some sense a flow is a non-blocking and asynchronous version of a sequence.
   - This makes it a perfect choice when dealing with streams of data, especially from asynchronous data sources
@@ -39,7 +40,7 @@ Different ways of providing multiple calculated values.
   - Similar to a 'sequence' the flow generator function 'dataFromFlow' returns immediately.
   Ref.:
   - https://kotlinlang.org/docs/flow.html#representing-multiple-values
-======================================================================================================================*/
+*/
 fun motivateFlows() {
     println("\n[Motivation]\n---")
 
@@ -97,15 +98,13 @@ fun motivateFlows() {
     println(" ]")
 }
 
-/*======================================================================================================================
-[Cold Flows]
-
+/*--- Cold Flows ---
 There are hot and cold flows, we start with the frozen one.
   - Even if it is already mentioned in the comments. A Flow is an asynchronous data stream and
     it doesn't have its own state. If you want a flow with state, consider [StateFlow].
   - Values are generated upon collector's demand, it starts when you collect (or observe) it.
     This is what is meant by 'cold'.
-======================================================================================================================*/
+*/
 fun introduceColdFlows() = runBlocking {
     println("\n[Cold Flows]\n---")
 
@@ -131,12 +130,10 @@ fun introduceColdFlows() = runBlocking {
     println(" 4| done")
 }
 
-/*======================================================================================================================
-[Cold Flow with Subscribers]
-
+/*--- Cold Flow with Subscribers ---
 Is it an exclusive source of data?
   - The important message here is that both subscribers see the same data, regardless of their start.
-======================================================================================================================*/
+*/
 fun viewColdFlowWithSubscribers() = runBlocking {
     println("\n[Cold Flow with Subscribers]\n---")
 
@@ -170,9 +167,7 @@ fun viewColdFlowWithSubscribers() = runBlocking {
     println("${mark("5")} wait for all consumers (runBlocking)")
 }
 
-/*======================================================================================================================
-[Hot Flow with Subscribers]
-
+/*--- Hot Flow with Subscribers ---
   - 'shareIn' makes a flow hot. That means, that subscribers get the data from the moment they subscribe.
     Previous data is gone.
     However, you can control the amount of data a new subscriber sees from the past by setting the 'replay' parameter.
@@ -194,7 +189,7 @@ Difference Cold Flow vs. Hot Flow:
     New subscribers can collect values from hot flows at any time and receive the latest emitted values based
     on the flow's configuration.
     Hot flows typically continue to be active and emit values indefinitely, waiting for new subscribers.
-======================================================================================================================*/
+*/
 fun viewHotFlowWithSubscribers() = runBlocking {
     println("\n[Hot Flow with Subscribers]\n---")
 
@@ -238,9 +233,7 @@ fun viewHotFlowWithSubscribers() = runBlocking {
     job2.cancelAndJoin()
 }
 
-/*======================================================================================================================
-[StateFlow with Observers]
-
+/*--- StateFlow with Observers ---
   - StateFlow is a hot flow with the behavior of remembering the latest emitted state.
   - MutableStateFlow is an implementation of the StateFlow interface with additional functionality
     that allows you to manually modify the current state.
@@ -254,7 +247,7 @@ fun viewHotFlowWithSubscribers() = runBlocking {
   - https://developer.android.com/jetpack/compose/tutorial
   - https://developer.android.com/jetpack/compose/documentation
   - https://developer.android.com/jetpack/compose/kotlin
-======================================================================================================================*/
+*/
 class CounterModel {
     val count: StateFlow<Int>                                   // public: a read-only StateFlow
         field = MutableStateFlow(0)                             // explicit backing field (Kotlin 2.4)
@@ -328,9 +321,7 @@ fun viewStateFlowWithObservers() = runBlocking {
      */
 }
 
-/*======================================================================================================================
-[Flow Operators]
-
+/*--- Flow Operators ---
 Transformation at your finger tips.
   - Intermediate operators return a new (cold) flow and do nothing on their own:
     map, filter, transform, onEach, take, combine, ...
@@ -339,7 +330,7 @@ Transformation at your finger tips.
     'associateWith' to collect into a Map.
   Ref.:
   - https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/
-======================================================================================================================*/
+*/
 fun viewFlowOperators() = runBlocking {
     println("\n[Flow Operators]\n---")
 
@@ -359,7 +350,8 @@ fun viewFlowOperators() = runBlocking {
     println(" 2| squares: $squares")
 }
 
-/*
+/*--- Background ---
+
 ChatGPT (an older answer, kept as an exercise: what is wrong or imprecise here?)
   Hints: Java Streams are neither asynchronous nor 'Reactive Streams' - that would be java.util.concurrent.Flow
   (Java 9). And Java Streams are lazy as well (nothing happens without a terminal operation),

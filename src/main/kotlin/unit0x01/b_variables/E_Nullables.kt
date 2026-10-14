@@ -2,9 +2,10 @@
 
 package unit0x01.b_variables
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 In this snippet we discuss Kotlin's treatment and ideas about null references and nullable types.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Variables | Nullables")
@@ -16,8 +17,9 @@ fun main() {
     moreOnNullables()
 }
 
-/*======================================================================================================================
-[Nullables]
+/*---- Content ----*/
+
+/*--- Nullables ---
 
 Understand nullables technically, but also their implications for safe programming.
   - Kotlin's type system is aimed at eliminating the danger of null references, also known
@@ -33,7 +35,7 @@ Understand nullables technically, but also their implications for safe programmi
   Ref.:
   - https://kotlinlang.org/docs/keyword-reference.html#operators-and-special-symbols
   - https://kotlinlang.org/docs/null-safety.html
-======================================================================================================================*/
+*/
 fun introduceNullables() {
     println("\n[Nullables]\n---")
 
@@ -55,11 +57,7 @@ fun introduceNullables() {
     println(" 4| list!!=${list!!}")                                 // convert to a non-null type (be absolute sure)
 }
 
-/*======================================================================================================================
-[Nullables Handling]
-
-Understanding and use smart-casts of nullable types.
-======================================================================================================================*/
+/*--- Nullables Handling --- Understanding and use smart-casts of nullable types. */
 fun introduceSmartCasts() {
     println("\n[Smart-Casts: Nullables Handling]\n---")
 
@@ -78,13 +76,13 @@ fun introduceSmartCasts() {
     println(" 3| other.size=${other.size}")                     // smart-cast after the assignment, the compiler
 }                                                               // knows it is not null (an 'if' would be always true)
 
-/*======================================================================================================================
-More on [Nullables]
+/*--- More on Nullables ---
+
   - If the compiler recognises code that can be guaranteed not to be null, additional tests for null,
     e.g. via '?.', are not necessary.
   Ref.:
   - https://kotlinlang.org/docs/null-safety.html
-======================================================================================================================*/
+*/
 fun moreOnNullables() {
     println("\n[More on Nullables]\n---")
 

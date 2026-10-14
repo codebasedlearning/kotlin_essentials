@@ -2,9 +2,10 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 From here it gets interesting...
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Extensions")
@@ -13,8 +14,9 @@ fun main() {
     introduceContextParameters()
 }
 
-/*======================================================================================================================
-[Extension Functions]
+/*---- Content ----*/
+
+/*--- Extension Functions ---
 
   - The 'receiver type' (e.g. 'MutableList<Int>') is the type/class being extended.
   - Inside, 'this' refers to the instance of the extended class ('receiver object').
@@ -23,7 +25,7 @@ fun main() {
   - MANY Kotlin libraries add functionality using extension functions.
   Ref.:
   - https://kotlinlang.org/docs/extensions.html
-======================================================================================================================*/
+*/
 
 fun String.first2(): String {
     return this.substring(0, 2)                                     // crashes for shorter strings, 'take(2)' would not
@@ -82,8 +84,7 @@ fun introduceExtensionFunctions() {
     println(" 7| ${numbers.map { it.length }.filter { it > 3 }}")
 }
 
-/*======================================================================================================================
-[Context Parameters]
+/*--- Context Parameters ---
 
   - An extension function has exactly one receiver ('this'). Context parameters (stable since Kotlin 2.4) let a
     function require further values from the calling context, e.g. a logger, a transaction or a coroutine scope.
@@ -91,7 +92,7 @@ fun introduceExtensionFunctions() {
   - They replace the former experimental 'context receivers'.
   Ref.:
   - https://kotlinlang.org/docs/context-parameters.html
-======================================================================================================================*/
+*/
 
 class Logger(private val prefix: String) {
     fun log(message: String) = println("$prefix $message")

@@ -2,9 +2,10 @@
 
 package unit0x02.b_concurrency
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet introduces coroutines and suspending functions with async.
-======================================================================================================================*/
+*/
 
 import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
@@ -15,9 +16,9 @@ fun main() {
     introduceAsync()
 }
 
-/*======================================================================================================================
-[Async]
+/*---- Content ----*/
 
+/*--- Async ---
 Give it back to me.
   - Conceptually, 'async' is just like 'launch'. It starts a separate coroutine which is a light-weight thread
     that works concurrently with all the other coroutines.
@@ -31,7 +32,7 @@ Give it back to me.
   Ref.:
   - https://kotlinlang.org/docs/composing-suspending-functions.html#concurrent-using-async
   - https://kotlinlang.org/docs/coroutines-and-channels.html#concurrency
-======================================================================================================================*/
+*/
 fun introduceAsync() = runBlocking {
     println("\n[Async]\n---")
 

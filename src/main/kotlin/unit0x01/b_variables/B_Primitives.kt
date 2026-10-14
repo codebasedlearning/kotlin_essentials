@@ -2,9 +2,10 @@
 
 package unit0x01.b_variables
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet is about primitive data types.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("\nKotlin Essentials -> Variables | Primitives")
@@ -15,8 +16,9 @@ fun main() {
     moreOnPrimitives()
 }
 
-/*======================================================================================================================
-[Primitives]
+/*---- Content ----*/
+
+/*--- Primitives ---
 
 Working with basic types.
   - "In Kotlin, everything is an object in the sense that you can call member functions and properties on
@@ -29,7 +31,7 @@ Working with basic types.
     ('if' cascades) has a code smell to it (even if there is a lot of code that does this).
   Ref.:
   - https://kotlinlang.org/docs/basic-types.html
-======================================================================================================================*/
+*/
 fun introducePrimitives() {
     println("\n[Primitives]\n---")
 
@@ -42,12 +44,7 @@ fun introducePrimitives() {
     println(" 1| i=$i, l=$l, c='$c', pi=$pi, b=$b")
 }
 
-/*======================================================================================================================
-More on [Primitives]
-
-Float, Short, Byte.
-======================================================================================================================*/
-
+/*--- More on Primitives --- Float, Short, Byte. */
 fun moreOnPrimitives() {
     println("\n[More on Primitives]\n---")
 

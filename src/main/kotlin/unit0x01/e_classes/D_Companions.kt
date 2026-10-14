@@ -2,10 +2,11 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Classes are a huge topic. We will start by looking at classes, properties, and methods.
 Interfaces, overloads and more follows. We will also look at some sort of "static" behaviour.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Companion Objects")
@@ -13,8 +14,9 @@ fun main() {
     introduceCompanionObjects()
 }
 
-/*======================================================================================================================
-[Companion Object]
+/*---- Content ----*/
+
+/*--- Companion Object ---
 
   - Kotlin has no 'static'. Use top-level declarations or a companion object instead.
   - Class members can access the private members of the corresponding companion object (and vice versa).
@@ -26,7 +28,7 @@ fun main() {
     and be passed around as a value.
   Ref.:
   - https://kotlinlang.org/docs/object-declarations.html#companion-objects
-======================================================================================================================*/
+*/
 
 class C1 private constructor(val id: Int) {                       // private ctor: instances via the factory only
     companion object Factory {

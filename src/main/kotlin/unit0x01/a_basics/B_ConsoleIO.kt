@@ -4,9 +4,10 @@ package unit0x01.a_basics
 import java.util.Locale
 import kotlin.math.abs
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 To see and control what is going on, we need to print formatted messages to the console and read some text from it.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("\nKotlin Essentials -> Basics | ConsoleIO")
@@ -15,8 +16,9 @@ fun main() {
     readTextFromConsole()
 }
 
-/*======================================================================================================================
-[String Interpolation]
+/*---- Content ----*/
+
+/*--- String Interpolation ---
 
 Build strings with embedded variables and expressions and print to the console.
   - 'print' or, with line separator, 'println', prints a given message to standard output stream.
@@ -30,8 +32,7 @@ Build strings with embedded variables and expressions and print to the console.
   - Since Kotlin 2.2 there is also 'multi-dollar interpolation' for strings containing many '$', see 'Strings'.
   Ref.:
   - https://kotlinlang.org/docs/strings.html#string-templates
-======================================================================================================================*/
-
+*/
 fun introduceStringInterpolation() {
     println("\n[String Interpolation]\n---")
 
@@ -55,8 +56,7 @@ fun introduceStringInterpolation() {
     println(" 6| locale-independent: pi=${"%.2f".format(Locale.ROOT, pi)}")    // always '3.14'
 }
 
-/*======================================================================================================================
-[Text Input]
+/*--- Text Input ---
 
 Read string from standard input stream, usually the console.
   - 'readln' reads a line of input from the standard input stream and returns it.
@@ -71,8 +71,7 @@ Read string from standard input stream, usually the console.
     other library functions.
   Ref.:
   - https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.io/readln.html
-======================================================================================================================*/
-
+*/
 fun readTextFromConsole() {
     println("\n[Text Input]\n---")
 

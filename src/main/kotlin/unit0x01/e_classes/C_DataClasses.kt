@@ -2,10 +2,11 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Classes are a huge topic. We will start by looking at classes, properties, and methods.
 Interfaces, overloads and more follows. We will also look at some sort of "static" behaviour.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Data Classes")
@@ -13,8 +14,9 @@ fun main() {
     introduceDataClasses()
 }
 
-/*======================================================================================================================
-[Data Classes]
+/*---- Content ----*/
+
+/*--- Data Classes ---
 
   - A data class comes with some built-in functionality: the compiler generates 'equals'/'hashCode',
     'toString', 'copy' and 'componentN' (for destructuring) from the properties of the primary constructor.
@@ -25,7 +27,7 @@ fun main() {
     '@Serializable' and convert them to/from JSON with 'Json.encodeToString(...)' / 'Json.decodeFromString(...)'.
   Ref.:
   - https://kotlinlang.org/docs/data-classes.html
-======================================================================================================================*/
+*/
 
 data class TeamMember(val name: String, val age: Int)
 

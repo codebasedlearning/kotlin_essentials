@@ -2,7 +2,8 @@
 
 package unit0x01.a_basics
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Welcome to our crash course. A few introductory words about Kotlin:
   - Like many other languages, Kotlin has code blocks enclosed in {}, block comments enclosed in /* */ and
     line comments starting with //.
@@ -29,12 +30,10 @@ Details:
   - There are more ways to run a Kotlin program:
     - in script mode (extension kts), no main function is required
     - in REPL mode (Read-Eval-Print Loop)
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Basics | Intro")
 }
 
-/*======================================================================================================================
-Comments hint: Many programming languages do not allow nested block comments - Kotlin does!
-======================================================================================================================*/
+/* --- Comments --- Many programming languages do not allow nested block comments - Kotlin does! */

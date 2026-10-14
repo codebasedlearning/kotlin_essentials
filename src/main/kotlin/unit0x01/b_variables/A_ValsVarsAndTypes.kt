@@ -2,9 +2,10 @@
 
 package unit0x01.b_variables
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet is about declaring and defining variables.
-======================================================================================================================*/
+*/
 
 private const val TOPIC = "Val and Var"                         // constant (!) value on top-level (compile-time)
 
@@ -14,8 +15,9 @@ fun main() {
     introduceValAndVar()
 }
 
-/*======================================================================================================================
-[Val and Var]
+/*---- Content ----*/
+
+/*--- Val and Var ---
 
 Define mutable and read-only variables.
   - 'var': mutable variable.
@@ -39,8 +41,7 @@ Define mutable and read-only variables.
   - https://kotlinlang.org/docs/basic-types.html
   - https://kotlinlang.org/docs/visibility-modifiers.html#packages
   - https://kotlinlang.org/docs/java-to-kotlin-interop.html
-======================================================================================================================*/
-
+*/
 fun introduceValAndVar() {
     println("\n[Val and Var]\n---")
 

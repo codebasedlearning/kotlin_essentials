@@ -2,9 +2,10 @@
 
 package unit0x01.c_control_flow
 
-/*======================================================================================================================
-Obviously we need structural elements to control the program flow. That is what the snippet is for.
-======================================================================================================================*/
+/*---- Preamble ----
+
+Obviously, we need structural elements to control the program flow. That is what the snippet is for.
+*/
 
 fun main() {
     println("Kotlin Essentials -> Control Flow | Iterations")
@@ -16,8 +17,9 @@ fun main() {
     introduceLabels()
 }
 
-/*======================================================================================================================
-[Iterations]
+/*---- Content ----*/
+
+/*--- Iterations ---
 
 Working with 'for'.
   - 'for', 'do' and 'while' work as it is known from Java.
@@ -26,7 +28,7 @@ Working with 'for'.
   - 'for' over ranges and arrays compiles to a plain counted loop (no iterator object).
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html
-======================================================================================================================*/
+*/
 fun introduceFor() {
     println("\n[Iterations]\n---")
 
@@ -64,15 +66,14 @@ fun introduceFor() {
     println()
 }
 
-/*======================================================================================================================
-[Iterations]
+/*--- Iterations ---
 
 Working with 'do' and 'while'.
   - 'for', 'do' and 'while' work as it is known from Java.
   - Same is true for 'break' and 'continue'.
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html
-======================================================================================================================*/
+*/
 fun introduceDoWhile() {
     println("\n[Do/While]\n---")
 
@@ -93,8 +94,7 @@ fun introduceDoWhile() {
     println()
 }
 
-/*======================================================================================================================
-[Iterations]
+/*--- Iterations ---
 
 Working with labels.
   - Nice to know: labeled breaks, and local returns from lambdas.
@@ -105,7 +105,7 @@ Working with labels.
   Ref.:
   - https://kotlinlang.org/docs/returns.html
   - https://kotlinlang.org/docs/inline-functions.html#break-and-continue
-======================================================================================================================*/
+*/
 fun introduceLabels() {
     println("\n[More on Control-Flow]\n---")
 

@@ -2,9 +2,10 @@
 
 package unit0x01.b_variables
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet is about collection types.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Variables | Collections")
@@ -15,8 +16,9 @@ fun main() {
     moreOnCollections()
 }
 
-/*======================================================================================================================
-[Collections]
+/*---- Content ----*/
+
+/*--- Collections ---
 
 Working with mutable and non-mutable (read-only) collections.
   - Basically we have lists, sets and maps, and each collection type can be mutable or read-only.
@@ -61,11 +63,7 @@ fun introduceCollections() {
                                                                 // or a.contentToString()
 }
 
-/*======================================================================================================================
-More on [Collections]
-
-Common operations on collections.
-======================================================================================================================*/
+/*--- More on Collections --- Common operations on collections. */
 fun moreOnCollections() {
     println("\n[More on Collections]\n---")
 

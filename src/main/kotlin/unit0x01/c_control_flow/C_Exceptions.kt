@@ -2,9 +2,10 @@
 
 package unit0x01.c_control_flow
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Obviously we need structural elements to control the program flow. That is what the snippet is for.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Control Flow | Exceptions")
@@ -12,8 +13,9 @@ fun main() {
     introduceExceptions()
 }
 
-/*======================================================================================================================
-[Exceptions]
+/*---- Content ----*/
+
+/*--- Exceptions ---
 
 Working with exceptions.
   - 'throw' is an expression.
@@ -32,7 +34,7 @@ Result:
     - Failure: Returns Result containing the thrown exception.
   - members like isSuccess, isFailure, getOrNull(), getOrDefault(),
     getOrElse(), getOrThrow(), exceptionOrNull()
-======================================================================================================================*/
+*/
 fun introduceExceptions() {
     println("\n[Exceptions]\n---")
 

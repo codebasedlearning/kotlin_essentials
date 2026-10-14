@@ -2,9 +2,10 @@
 
 package unit0x01.c_control_flow
 
-/*======================================================================================================================
-Obviously we need structural elements to control the program flow. That is what the snippet is for.
-======================================================================================================================*/
+/*---- Preamble ----
+
+Obviously, we need structural elements to control the program flow. That is what the snippet is for.
+*/
 
 fun main() {
     println("Kotlin Essentials -> Control Flow | Conditionals")
@@ -16,15 +17,16 @@ fun main() {
     moreOnWhen()
 }
 
-/*======================================================================================================================
-[If and When]
+/*---- Content ----*/
+
+/*--- If and When ---
 
 Working with 'if' and 'when' (aka switch-case).
   - Classical 'if-else' as it is known from Java.
   - In Kotlin 'if' and 'when' are also an expression, i.e. they can be assigned.
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html
-======================================================================================================================*/
+*/
 fun introduceIf() {
     println("\n[If]\n---")
 
@@ -49,8 +51,7 @@ fun introduceIf() {
     println(" 6| max($a,$b)=$maxBlock")
 }
 
-/*======================================================================================================================
-[When]
+/*--- When ---
 
 Working with 'when' (aka switch-case).
   - 'when' is like 'switch-case' with cases more complex.
@@ -58,7 +59,7 @@ Working with 'when' (aka switch-case).
   - Used as an expression, 'when' must be exhaustive (usually via 'else').
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html
-======================================================================================================================*/
+*/
 fun introduceWhen() {
     println("\n[When]\n---")
 
@@ -76,8 +77,7 @@ fun introduceWhen() {
     println(" 4| j=$j")
 }
 
-/*======================================================================================================================
-More on [When]
+/*--- More on When ---
 
 The real power of 'when'.
   - Without a subject, 'when' replaces if-else-if chains.
@@ -91,7 +91,7 @@ The real power of 'when'.
   Ref.:
   - https://kotlinlang.org/docs/control-flow.html#guard-conditions-in-when-expressions
   - https://kotlinlang.org/docs/sealed-classes.html#use-sealed-classes-with-when-expression
-======================================================================================================================*/
+*/
 
 sealed interface Shape                                          // all subtypes are known at compile time
 data class Circle(val radius: Double) : Shape

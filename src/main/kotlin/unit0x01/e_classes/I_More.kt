@@ -2,10 +2,11 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Classes are a huge topic. We will start by looking at classes, properties, and methods.
 Interfaces, overloads and more follows. We will also look at some sort of "static" behaviour.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | More")
@@ -15,12 +16,12 @@ fun main() {
     moreOnReflection()
 }
 
-/*======================================================================================================================
-More on [Operator Overloading]
+/*---- Content ----*/
 
+/*--- Operator Overloading ---
   Ref.:
   - https://kotlinlang.org/docs/reference/operator-overloading.html
-======================================================================================================================*/
+*/
 
 data class Modulo(val x: Int, val b: Int) {
     // a +op
@@ -41,12 +42,10 @@ fun moreOnOperatorOverloading() {
     println(" 2| (1)%5=$one")
 }
 
-/*======================================================================================================================
-More on [Reflection]
-
+/*--- More on [Reflection] ---
   Ref.:
   - https://kotlinlang.org/docs/reflection.html
-======================================================================================================================*/
+*/
 fun moreOnReflection() {
     println("\n[More on Reflection]\n---")
 

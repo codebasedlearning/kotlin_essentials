@@ -2,12 +2,13 @@
 
 package unit0x02.a_sequences
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet introduces
 - sequences, a type of collection that can be thought of as a more generalised form of lists or arrays, and
 - yield, a function used in sequence generators;
 - and, finally, the idea of suspension points.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Sequences | Yield")
@@ -23,11 +24,9 @@ fun main() {
     moreOnYieldAll()
 }
 
-/*======================================================================================================================
-[Data Handling]
+/*---- Content ----*/
 
-Motivates a better, more efficient approach to handling sequence data - hopefully.
-======================================================================================================================*/
+/*--- Data Handling --- Motivates a better, more efficient approach to handling sequence data - hopefully. */
 fun discussDataHandling() {
     println("\n[Data Handling]\n---")
 
@@ -51,9 +50,7 @@ fun discussDataHandling() {
     // Q: What do we need to have a 'better', more efficient, way of dealing with such data?
 }
 
-/*======================================================================================================================
-[First Sequence]
-
+/*--- First Sequence ---
 A suspended (paused) function - that's new.
   - The important thing to understand in this snippet is that 'yield' is in a sense 'returning' a value, but leaving
     the function active in order to continue after the yield, e.g. in a for loop.
@@ -66,7 +63,7 @@ A suspended (paused) function - that's new.
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence-scope/yield.html
   - https://www.baeldung.com/kotlin/yield-function
-======================================================================================================================*/
+*/
 fun introduceSequences() {
     println("\n[Sequences]\n---")
 
@@ -88,14 +85,12 @@ fun introduceSequences() {
     println(" 4| end for")
 }
 
-/*======================================================================================================================
-[List vs. Sequence]
-
+/*--- List vs. Sequence ---
 Looking for a way to iterate a sequence of values without storing them.
   - In particular, this code shows: (a) why and where sequences can be used, and (b) the similarity on
     the algorithmic side, pointing out the place where building the data structure can be replaced
     by providing a value with 'yield'.
-======================================================================================================================*/
+*/
 fun viewListVsSequence() {
     println("\n[List vs. Sequence]\n---")
 
@@ -131,9 +126,7 @@ fun viewListVsSequence() {
     println()
 }
 
-/*======================================================================================================================
-[Sequences at work]
-
+/*--- Sequences at work ---
 Sequences often require follow-up operations such as filtering or mapping.
   - It is worth looking at the definition of 'map', for example. The iterator concept is clearly visible.
     So 'map' and 'filter' are also lazy.
@@ -141,7 +134,7 @@ Sequences often require follow-up operations such as filtering or mapping.
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/filter.html
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/map.html
-======================================================================================================================*/
+*/
 fun viewSequencesAtWork() {
     println("\n[Sequences at work]\n---")
 
@@ -174,12 +167,10 @@ fun viewSequencesAtWork() {
     println(" 5| iterator (2): ${iterator.asSequence().joinToString(" ")}") // empty
 }
 
-/*======================================================================================================================
-More on [Sequence Implementation]
-
+/*--- More on Sequence Implementation ---
   - Under the hood we have an iterator concept that looks for a 'next value' and as long as there is data
     the iterator is not finished.
-======================================================================================================================*/
+*/
 fun viewSequenceImplementation() {
     println("\n[More on Sequence Implementation]\n---")
 
@@ -204,15 +195,13 @@ fun viewSequenceImplementation() {
     println(" 5| end while")
 }
 
-/*======================================================================================================================
-More on [Unlimited sequences]
-
+/*--- More on Unlimited sequences ---
 Are there infinite sequences? Yes!
   - It is perfectly valid to have an infinite or 'unlimited' sequence. You just need to limit each traverse
     to a finite amount of data to avoid infinite loops.
   Ref.:
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/take.html
-======================================================================================================================*/
+*/
 fun moreOnUnlimitedSequences() {
     println("\n[Unlimited sequences]\n---")
 
@@ -225,14 +214,12 @@ fun moreOnUnlimitedSequences() {
     println()
 }
 
-/*======================================================================================================================
-More on [YieldAll]
-
+/*--- More on YieldAll ---
 Composing sequences.
   - Instead of having a for-loop for each sequence, 'yieldAll' basically does this.
   Ref.:
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.sequences/-sequence-scope/yield-all.html
-======================================================================================================================*/
+*/
 fun moreOnYieldAll() {
     println("\n[More on YieldAll]\n---")
 

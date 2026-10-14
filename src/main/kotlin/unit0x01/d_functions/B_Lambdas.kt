@@ -2,9 +2,10 @@
 
 package unit0x01.d_functions
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Functions are everywhere - especially in this snippet. We show how they are declared and used.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Functions | Lambdas")
@@ -12,8 +13,9 @@ fun main() {
     introduceLambdas()
 }
 
-/*======================================================================================================================
-[Lambdas / Higher-order functions]
+/*---- Content ----*/
+
+/*--- Lambdas / Higher-order functions ---
 
 Working with lambdas and trailing lambdas.
   - Use lambdas if you have a local in-place functionality.
@@ -22,7 +24,7 @@ Working with lambdas and trailing lambdas.
   - Type example: sum: (Int, Int) -> Int
   Ref.:
   - https://kotlinlang.org/docs/lambdas.html
-======================================================================================================================*/
+*/
 fun introduceLambdas() {
     println("\n[Lambdas / Higher-order functions]\n---")
 

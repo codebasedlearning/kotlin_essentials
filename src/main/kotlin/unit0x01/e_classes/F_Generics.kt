@@ -2,9 +2,10 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Parametric Polymorphism
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Generics")
@@ -12,8 +13,9 @@ fun main() {
     introduceGenerics()
 }
 
-/*======================================================================================================================
-[Generics]
+/*---- Content ----*/
+
+/*--- Generics ---
 
 Defining generic classes and functions.
   - Constraints restrict the type parameter: '<T : Number>', or several via 'where'.
@@ -24,7 +26,7 @@ Defining generic classes and functions.
   - Star projection 'List<*>' means 'a list of some unknown type'.
   Ref.:
   - https://kotlinlang.org/docs/generics.html
-======================================================================================================================*/
+*/
 
 // class Boxed<T>(t: T) {
 //    var value = t

@@ -2,12 +2,14 @@
 
 package unit0x01.d_functions
 
-/*======================================================================================================================
-We look into main with parameters and how to build a jar file.
-======================================================================================================================*/
+/*---- Preamble ----
 
-/*======================================================================================================================
-[Main]
+We look into main with parameters and how to build a jar file.
+*/
+
+/*---- Content ----*/
+
+/*--- Main ---
 
 Defining 'main' with (command line) parameters.
   - 'main' can be equipped with parameters from the command line
@@ -27,8 +29,7 @@ Building it from inside IntelliJ uses artifacts. You can define them in the 'Mod
 
 To run 'main' with arguments inside IntelliJ, but without artifacts, use or create a 'configuration' and pass the
 runtime arguments there.
-======================================================================================================================*/
-
+*/
 fun main(args: Array<String>) {
     println("Kotlin Essentials -> Functions | Main")
 

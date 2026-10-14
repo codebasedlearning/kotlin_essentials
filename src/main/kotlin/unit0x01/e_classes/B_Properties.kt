@@ -3,10 +3,11 @@
 package unit0x01.e_classes
 import java.time.LocalDate
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Classes are a huge topic. We will start by looking at classes, properties, and methods.
 Interfaces, overloads and more follows. We will also look at some sort of "static" behaviour.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Properties")
@@ -14,8 +15,9 @@ fun main() {
     introduceProperties()
 }
 
-/*======================================================================================================================
-[Properties]
+/*---- Content ----*/
+
+/*--- Properties ---
 
 Defining and understanding properties.
   - In fact, properties in Kotlin classes can be declared either as mutable ('var'), or as read-only ('val').
@@ -31,7 +33,7 @@ Defining and understanding properties.
   Ref.:
   - https://kotlinlang.org/docs/properties.html
   - https://kotlinlang.org/docs/properties.html#explicit-backing-fields
-======================================================================================================================*/
+*/
 
 class B1 {
     var n = 1                                                   // mutable property with implicit getter and setter

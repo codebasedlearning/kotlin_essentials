@@ -2,10 +2,11 @@
 
 package unit0x01.a_basics
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Write your code in the right style from the start. Let's take a look at some common coding conventions,
 even if they are introduced later.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("\nKotlin Essentials -> Basics | Conventions")
@@ -13,15 +14,15 @@ fun main() {
     viewCodingConventions()
 }
 
-/*======================================================================================================================
-[Coding Conventions]
+/*---- Content ----*/
+
+/*--- Coding Conventions ---
 
 Be familiar with the basic naming conventions.
   - Be concise and consistent.
   Ref.:
   - https://kotlinlang.org/docs/coding-conventions.html
-======================================================================================================================*/
-
+*/
 fun viewCodingConventions() {
     println("\n[Common Coding Conventions]\n---")
     println("""

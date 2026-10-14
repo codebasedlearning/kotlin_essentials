@@ -2,11 +2,12 @@
 
 package unit0x01.a_basics
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Try using AI and see what comments and suggestions you receive.
 
 'As a Kotlin programmer you see this code, any suggestions?'
-======================================================================================================================*/
+*/
 
 fun main() {
     println("\nKotlin Essentials -> Basics | AI")
@@ -14,6 +15,8 @@ fun main() {
     val evens = collectEvenNumbersUpTo(25)
     println("Evens: $evens")
 }
+
+/*---- Content ----*/
 
 fun collectEvenNumbersUpTo(n: Int): List<Int> {
     println("\n[collectEvenNumbersUpTo]\n---")

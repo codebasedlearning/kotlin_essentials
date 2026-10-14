@@ -2,10 +2,11 @@
 
 package unit0x02.b_concurrency
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet introduces coroutines and suspending functions, and discusses many topics
 related to synchronous and asynchronous programming.
-======================================================================================================================*/
+*/
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
@@ -36,10 +37,9 @@ fun main() {
     moreOnFileIO()
 }
 
+/*---- Content ----*/
 
-/*======================================================================================================================
-[Launch and Wait]
-
+/*--- Launch and Wait ---
 Note the timestamps.
   - A coroutine is a generalization of a subroutine or function. Unlike subroutines, coroutines allow multiple
     entry points for suspending and resuming execution at certain locations (what we see later).
@@ -78,7 +78,7 @@ Dispatcher:
     'Dispatchers.IO.limitedParallelism(n)' gives you a view with its own limit.
   Ref.:
   - https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html#unconfined-vs-confined-dispatcher
-======================================================================================================================*/
+*/
 fun introduceCoroutines() {
     println("\n[Introduce Coroutines]\n---")
 
@@ -113,9 +113,7 @@ fun introduceCoroutines() {
     println("${mark("4")} all joined, end of main")
 }
 
-/*======================================================================================================================
-[Understand Dispatchers]
-
+/*--- Understand Dispatchers ---
 When no Dispatcher is given, it inherits the context from the parent context, which is
 'runBlocking' in this case.
 Here, any blocking operation in one coroutine would block the main thread, impacting the
@@ -123,7 +121,7 @@ execution of the other coroutine and causing delays or freezes in the applicatio
 Note, that 'Dispatchers.Main' needs a UI module (Android, Swing, JavaFX), otherwise it results in an error.
 
 Dispatchers can be specified for launch and/or for runBlocking.
-======================================================================================================================*/
+*/
 fun understandDispatchers() {
     println("\n[Understand Dispatchers]\n---")
     val mark = ConcurrencyInfo()
@@ -175,15 +173,13 @@ fun understandDispatchers() {
     println("${mark("4")} after blocking")
 }
 
-/*======================================================================================================================
-[Suspending Functions]
-
+/*--- Suspending Functions ---
 Make it explicit.
   - Suspending function: A function that can suspend the execution without blocking a thread.
     You can specify a function as suspending with the 'suspend' keyword.
   - Understand the idea of a suspension point.
   - delay() is a suspension point, or simply yield() (use it for cooperative behaviour).
-======================================================================================================================*/
+*/
 fun introduceSuspendingFunctions() {
     println("\n[Suspending Functions]\n---")
     val mark = ConcurrencyInfo()
@@ -216,9 +212,7 @@ fun introduceSuspendingFunctions() {
     println("${mark("4")} after blocking")
 }
 
-/*======================================================================================================================
-[Jobs]
-
+/*--- Jobs ---
 You had one job.
   - 'launch' (among others) is an extension function on CoroutineScope.
     It returns a reference to the coroutine as a Job object.
@@ -238,7 +232,7 @@ Context
   - If you catch a 'CancellationException', rethrow it, otherwise cancellation may not propagate properly.
   - Cancellation in Kotlin Coroutines is cooperative, meaning that cancellation of a coroutine job
     is a request, not an order.
-======================================================================================================================*/
+*/
 fun introduceJobs() {
     println("\n[Jobs]\n---")
     val mark = ConcurrencyInfo()
@@ -286,9 +280,7 @@ fun introduceJobs() {
     println("${mark("7")} after blocking")
 }
 
-/*======================================================================================================================
-[Coroutine Scope]
-
+/*--- Coroutine Scope ---
 Care for your children.
   - The coroutine scope is responsible for the structure and parent-child relationships between different coroutines.
     Hence, it implicitly defines the lifetime of a coroutine. It ensures that your coroutines are canceled
@@ -300,7 +292,7 @@ Care for your children.
   Ref.:
   - https://kotlinlang.org/docs/coroutines-and-channels.html#structured-concurrency
   - https://kotlinlang.org/docs/exception-handling.html#coroutineexceptionhandler
-======================================================================================================================*/
+*/
 fun introduceCoroutineScope() {
     println("\n[Coroutine Scope]\n---")
     val mark = ConcurrencyInfo()
@@ -329,12 +321,10 @@ fun introduceCoroutineScope() {
     println("${mark("3")} after blocking")
 }
 
-/*======================================================================================================================
-[Concurrency]
-
+/*--- Concurrency ---
   Ref.:
   - https://kotlinlang.org/docs/shared-mutable-state-and-concurrency.html#mutual-exclusion
-======================================================================================================================*/
+*/
 fun discussConcurrency() {
     println("\n[Concurrency and Mutual Exclusion]\n---")
 
@@ -390,8 +380,7 @@ fun discussConcurrency() {
     }.let { println(" 5| count $counter, after $it") }
 }
 
-/*======================================================================================================================
-Hints:
+/*--- Hints ---
   V1:   counter is not protected and can be modified simultaneously, remember,
         ++counter means counter=counter+1 and if two threads read counter (right side) and update it, one update is lost
   V2:   Yes, it works. When you use runBlocking and launch a coroutine with Dispatchers.Default inside it, the
@@ -407,13 +396,9 @@ Hints:
         new coroutines that inherit the context of the scope but primarily manages the overall coroutine lifecycle.
         The scope itself doesn't specify how and where the coroutine will run, but rather, it uses
         the CoroutineContext for that configuration. So, yes.
-======================================================================================================================*/
+*/
 
-/*======================================================================================================================
-[Compare to Threads]
-
-This function is structural comparable to the introduceThreads() function.
-======================================================================================================================*/
+/*--- Compare to Threads --- This function is structural comparable to the introduceThreads() function. */
 fun compareToThreads() {
     println("\n[Compare to Threads]\n---")
 
@@ -454,14 +439,12 @@ fun compareToThreads() {
     println("${mark("6")} woke up, all joined, end of main")
 }
 
-/*======================================================================================================================
-[More on Coroutines]
-
+/*--- More on Coroutines ---
 Impressive, do that with threads.
   - Unless you have CPU-bound tasks, creating and destroying, and context switching with coroutines
     uses much less memory and time. There is also less or no interaction with the operating system.
     This is why it is so fast compared to threads.
-======================================================================================================================*/
+*/
 fun moreOnCoroutines() {
     println("\n[More on Coroutines]\n---")
 
@@ -480,9 +463,7 @@ fun moreOnCoroutines() {
     println("\n 2| ${time.elapsed()} | done")
 }
 
-/*======================================================================================================================
-More on [Virtual Threads]
-
+/*--- More on Virtual Threads ---
 Since Java 21 the JVM has 'virtual threads' (Project Loom): lightweight threads managed by the JVM, not by the OS.
   - Like coroutines, you can have hundreds of thousands of them, and blocking calls (sleep, I/O) only park
     the virtual thread, not the underlying OS (carrier) thread.
@@ -492,7 +473,7 @@ Since Java 21 the JVM has 'virtual threads' (Project Loom): lightweight threads 
     inside coroutines does not exhaust a thread pool.
   Ref.:
   - https://docs.oracle.com/en/java/javase/21/core/virtual-threads.html
-======================================================================================================================*/
+*/
 fun moreOnVirtualThreads() {
     println("\n[More on Virtual Threads]\n---")
 
@@ -515,15 +496,13 @@ fun moreOnVirtualThreads() {
     }
 }
 
-/*======================================================================================================================
-[More on Exceptions and GlobalScope]
-
+/*--- More on Exceptions and GlobalScope---
   - 'GlobalScope' is a global 'CoroutineScope' not bound to any job. 'GlobalScope' is used to launch
     top-level coroutines which are operating on the whole application lifetime and are not cancelled prematurely.
   - Active coroutines launched in GlobalScope do not keep the process alive. They are like daemon threads.
   Ref.:
   - https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/
-======================================================================================================================*/
+*/
 @OptIn(DelicateCoroutinesApi::class)
 fun moreOnExceptionsAndGlobalScope() {
     println("\n[More on Exceptions and GlobalScope]\n---")
@@ -544,14 +523,12 @@ fun moreOnExceptionsAndGlobalScope() {
     println(" 2| end of program")
 }
 
-/*======================================================================================================================
-[More on File IO]
-
+/*--- More on File IO ---
 Blocking I/O in a coroutine.
   - Move blocking calls to Dispatchers.IO with 'withContext' - no 'async { ... }.await()' needed, see 'compareToThreads'.
   - 'Result' is a type for 'success or failure'; 'fold' handles both cases.
   - Careful with 'runCatching' in coroutines: it also catches 'CancellationException', hence the explicit try-catch.
-======================================================================================================================*/
+*/
 fun moreOnFileIO() {
     println("\n[More on File IO]\n---")
 

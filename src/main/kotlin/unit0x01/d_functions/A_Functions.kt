@@ -2,9 +2,10 @@
 
 package unit0x01.d_functions
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Functions are everywhere - especially in this snippet. We show how they are declared and used.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Functions | Functions")
@@ -12,8 +13,9 @@ fun main() {
     introduceFunctions()
 }
 
-/*======================================================================================================================
-[Functions]
+/*---- Content ----*/
+
+/*--- Functions ---
 
 Defining and calling functions.
   - Functions can be defined with block body ({}) or expression body (=).
@@ -31,7 +33,7 @@ Defining and calling functions.
     (This also works for properties, constructors, member functions and so on.)
   Ref.:
   - https://kotlinlang.org/docs/functions.html
-======================================================================================================================*/
+*/
 
 fun isDevilLongVersion(n: Int): Boolean {                       // classical function with param. and return type
     return (n == 6 || n == 66 || n == 666)

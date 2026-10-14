@@ -5,9 +5,10 @@ package unit0x01.e_classes
 import kotlin.properties.Delegates
 import kotlin.reflect.KProperty
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 Polymorphism Subtyping
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Polymorphism")
@@ -20,8 +21,9 @@ fun main() {
     showComposeLikeDelegates()
 }
 
-/*======================================================================================================================
-[Inheritance]
+/*---- Content ----*/
+
+/*--- Inheritance ---
 
 Understanding single inheritance.
   - The class you want to inherit from must be 'open'.
@@ -33,7 +35,7 @@ Understanding single inheritance.
   - Base class initialization is done before derived class initialization.
   Ref.:
   - https://kotlinlang.org/docs/inheritance.html
-======================================================================================================================*/
+*/
 
 open class Base(val n: Int) {                                       // open means: can be inherited from
     open fun f() = println(" a| . Base::f, n=${this.n}")            // open means: can be overridden
@@ -60,8 +62,7 @@ fun introduceInheritance() {
     }
 }
 
-/*======================================================================================================================
-[Interfaces]
+/*--- Interfaces ---
 
 Understanding implementing interfaces.
   - Interfaces can contain declarations of abstract methods, as well as method implementations.
@@ -70,7 +71,7 @@ Understanding implementing interfaces.
   - Interfaces can derive from other interfaces.
   Ref.:
   - https://kotlinlang.org/docs/interfaces.html
-======================================================================================================================*/
+*/
 
 interface Drivable {
     val speed: Double                                               // abstract, implicitly 'open'
@@ -94,12 +95,10 @@ fun introduceInterfaces() {
 
 }
 
-/*======================================================================================================================
-[Ad-hoc Objects]
-
+/*--- Ad-hoc Objects ---
   Ref.:
   - https://kotlinlang.org/docs/object-declarations.html
-======================================================================================================================*/
+*/
 fun introduceAdHocObjects() {
     println("\n[Ad-hoc Objects]\n---")
 
@@ -119,15 +118,14 @@ fun introduceAdHocObjects() {
     }
 }
 
-/*======================================================================================================================
-[SAM] Single Abstract Methods.
+/*--- SAM - Single Abstract Methods ---
 
   - The main difference is that a fun interface is a functional interface (SAM interface),
     meaning it has exactly one abstract method and supports SAM conversion: you can implement
     it directly using a lambda.
   Ref.:
   - https://kotlinlang.org/docs/fun-interfaces.html#sam-conversions
-======================================================================================================================*/
+*/
 
 fun interface IntPredicate {
     fun check(i: Int): Boolean
@@ -177,12 +175,10 @@ fun introduceSAM() {
     rK()
 }
 
-/*======================================================================================================================
-[Delegation Pattern]
-
+/*--- Delegation Pattern ---
   Ref.:
   - https://kotlinlang.org/docs/delegation.html
-======================================================================================================================*/
+*/
 
 interface CanFly {
     fun fly()

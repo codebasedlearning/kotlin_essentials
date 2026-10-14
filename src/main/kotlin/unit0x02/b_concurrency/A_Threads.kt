@@ -5,9 +5,10 @@ package unit0x02.b_concurrency
 import unit0x02.utils.*
 import kotlin.concurrent.thread
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 This snippet shows how to start and join a classical thread.
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Concurrency | Threads")
@@ -15,15 +16,15 @@ fun main() {
     introduceThreads()
 }
 
-/*======================================================================================================================
-[Threads]
+/*---- Content ----*/
 
+/*--- Threads ---
 Classic approach.
   - Threads work in a similar way in many languages. Here we restrict ourselves to start and join,
     as we focus more on coroutines and the tools within.
   Ref.:
   - https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.concurrent/thread.html
-======================================================================================================================*/
+*/
 fun introduceThreads() {
     println("\n[Threads]\n---")
 

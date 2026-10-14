@@ -2,9 +2,10 @@
 
 package unit0x01.e_classes
 
-/*======================================================================================================================
+/*---- Preamble ----
+
 From here it gets interesting...
-======================================================================================================================*/
+*/
 
 fun main() {
     println("Kotlin Essentials -> Classes | Scope Functions")
@@ -12,8 +13,9 @@ fun main() {
     introduceScopeFunctions()
 }
 
-/*======================================================================================================================
-[Scope Functions]
+/*---- Content ----*/
+
+/*--- Scope Functions ---
 
   - let, run, also, apply and with
   - Basically, these functions all perform the same action: execute a block of code on an object.
@@ -24,7 +26,7 @@ fun main() {
     A receiver is similar to an implicit first argument.
   Ref.:
   - https://kotlinlang.org/docs/scope-functions.html
-======================================================================================================================*/
+*/
 
 class Person(var name: String, var age: Int) {                      // simple Person item
     fun register() {}                                               // stub op.
