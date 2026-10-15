@@ -41,4 +41,37 @@ fun introduceLambdas() {
     println(" 3| inc3=42+3=$inc3")
     val inc4 = eval(95) { it+4 }                                // parameter not named, so it is 'it'
     println(" 4| inc4=95+4=$inc4")
+
+    // example
+    fun myFor(list: List<Int>, block: (Int) -> Unit) {
+        for (item in list) { block(item) }
+    }
+    print(" 5| ")
+    val list = listOf(1, 2, 3)
+    myFor(list) {
+        print(it)
+    }
+    println()
+
+    // preview extension of List<Int>
+    fun List<Int>.myFor(block: (Int) -> Unit) {
+        for (item in this) { block(item) }
+    }
+    print(" 6| ")
+    listOf(1, 2, 3).myFor {
+        print(it)
+    }
+    println()
+
+    // preview generic extension of any Collection<T>
+    fun <T> Iterable<T>.myFor(block: (T) -> Unit) {
+        for (item in this) { block(item) }
+    }
+    print(" 7| ")
+    setOf(1,2,3).myFor {
+        print(it)
+    }
+    println()
+
+    // it exists: setOf(1,2,3).forEach {  }
 }

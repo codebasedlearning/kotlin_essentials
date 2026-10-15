@@ -29,8 +29,8 @@ data class Modulo(val x: Int, val b: Int) {
     override fun toString() = "$x"
 }
 
-// infix and extension function, returns 1 as Modulo-instance with base b
-infix fun Int.basis(b: Int) = Modulo(1,b)
+// infix and extension function, returns int as Modulo-instance with base b
+infix fun Int.basis(b: Int) = Modulo(this,b)
 
 fun moreOnOperatorOverloading() {
     println("\n[More on Operator Overloading]\n---")
@@ -38,8 +38,8 @@ fun moreOnOperatorOverloading() {
     val m = Modulo(3, 5)
     println(" 1| (${m.x}+4)%5=${m+4}")
 
-    val one = 1 basis 5
-    println(" 2| (1)%5=$one")
+    val one = 2 basis 5
+    println(" 2| (2)%5=$one")
 }
 
 /*--- More on [Reflection] ---

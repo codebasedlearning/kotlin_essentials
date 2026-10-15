@@ -24,8 +24,8 @@ fun main() {
   - A receiver is the object in whose context a function is executed. Its members can be accessed
     directly, without explicitly naming the object.
     A receiver is similar to an implicit first argument.
-  Ref.:
-  - https://kotlinlang.org/docs/scope-functions.html
+  - Ref.:
+    https://kotlinlang.org/docs/scope-functions.html
 */
 
 class Person(var name: String, var age: Int) {                      // simple Person item
