@@ -16,6 +16,7 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.Executors
 import kotlin.coroutines.ContinuationInterceptor
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.TimeSource
 import kotlin.time.measureTime
 
@@ -90,7 +91,7 @@ fun introduceCoroutines() {
             println("${mark("a", coroutineContext)} started (in '${Thread.currentThread().name}')") // or currentCoroutineContext()
             repeat(3) {
                 // Thread.sleep(100L) would block, delay(100L) suspends
-                delay(100L)
+                delay(100L.milliseconds)
                 println("${mark("b", coroutineContext)} - after sleep (in ${Thread.currentThread().name})")
             }
             println("${mark("c", coroutineContext)} end of coro")
@@ -98,7 +99,7 @@ fun introduceCoroutines() {
         launch(Dispatchers.Default) {   // coro Beth
             println("${mark("d", coroutineContext)} started (in '${Thread.currentThread().name}')")
             repeat(3) {
-                delay(100L) // suspends
+                delay(100L.milliseconds) // suspends
                 println("${mark("e", coroutineContext)} - after sleep (in ${Thread.currentThread().name})")
             }
             println("${mark("f", coroutineContext)} end of coro")
@@ -146,7 +147,7 @@ fun understandDispatchers() {
     runBlocking {
         launch(Dispatchers.Default) {
             println("${mark("e")} coroutine starts in ${threadName()}")
-            Thread.sleep(100)
+            Thread.sleep(100) // for demo purposes
             println("${mark("f")} coroutine ends in ${threadName()}")
         }
         launch(Dispatchers.Default) {
@@ -187,15 +188,15 @@ fun introduceSuspendingFunctions() {
     // this is a suspending function (keyword 'suspend')
     suspend fun doSomeWork400() {
         println("${mark("a", currentCoroutineContext())} coroutine started in ${threadName()}, work for 0.4s")
-        delay(400L) // suspension point!
+        delay(400L.milliseconds) // suspension point!
         println("${mark("b", currentCoroutineContext())} end coroutine")
     }
     // another suspending function with two suspension points
     suspend fun doSomeWork200() {
         println("${mark("c", currentCoroutineContext())} coroutine started in ${threadName()}, work for 0.2s")
-        delay(200L) // suspension point!
+        delay(200L.milliseconds) // suspension point!
         println("${mark("d", currentCoroutineContext())} in between in ${threadName()}, work for another 0.2s")
-        delay(200L) // suspension point!
+        delay(200L.milliseconds) // suspension point!
         println("${mark("e", currentCoroutineContext())} end coroutine")
     }
 
@@ -243,7 +244,7 @@ fun introduceJobs() {
         val job = launch {
             try {
                 println("${mark("a", currentCoroutineContext())} coroutine started, work for 300ms")
-                delay(300L)
+                delay(300L.milliseconds)
                 println("${mark("b", currentCoroutineContext())} coroutine ended")
             } catch (e: CancellationException) {
                 println("${mark("c", currentCoroutineContext())} coroutine cancelled: '${e.message}'")
@@ -251,7 +252,7 @@ fun introduceJobs() {
             }
         }
         println("${mark("3")} behind launch, work for 0.1s")
-        delay(100L)
+        delay(100L.milliseconds)
         println("${mark("4")} behind work, cancel 'job' or wait for it")
         // wait for job, or cancel (cancel() raises 'StandaloneCoroutine was cancelled')
         // job.join()
@@ -305,16 +306,16 @@ fun introduceCoroutineScope() {
             coroutineScope {
                 launch {
                     println("${mark("a",currentCoroutineContext())} coroutine started in ${threadName()}, work for 300ms")
-                    delay(300L)
+                    delay(300L.milliseconds)
                     println("${mark("b",currentCoroutineContext())} end coroutine")
                 }
                 println("${mark("c")} coro launched, work for 0.1s")
-                delay(100L)
+                delay(100L.milliseconds)
                 println("${mark("d")} cancel coro")
                 cancel()
                 println("${mark("e")} coroutineScope end")
             }
-        } catch (e: CancellationException) {
+        } catch (_: CancellationException) {
             println("${mark("f")} canceled")
         }
     }
@@ -455,7 +456,7 @@ fun moreOnCoroutines() {
     runBlocking {
         repeat(1000) { // launch a lot of coroutines
             launch {
-                delay(100)
+                delay(100.milliseconds)
                 print(".")
             }
         }

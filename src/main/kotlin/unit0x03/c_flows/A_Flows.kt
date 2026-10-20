@@ -14,6 +14,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import unit0x02.utils.ConcurrencyInfo
 import unit0x02.utils.readTemperature
+import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
     println("Kotlin Essentials -> Flows | Flows")
@@ -120,7 +121,7 @@ fun introduceColdFlows() = runBlocking {
     val flow = dataFromFlow()
 
     println(" 2| got flow, nothing started so far")
-    delay(100L)
+    delay(100L.milliseconds)
     println(" 3| still no activity...")
 
     // 'collect' is a suspending function
@@ -142,7 +143,7 @@ fun viewColdFlowWithSubscribers() = runBlocking {
     fun dataFromFlow() = flow {                                 // Flow<Int>; or short: (1..4).asFlow()
         println("${mark("a", currentCoroutineContext())} . flow is started")
         for (i in 1..4) {
-            delay(200)
+            delay(200.milliseconds)
             println("${mark("b", currentCoroutineContext())} . emit $i")
             emit(i)
         }
@@ -157,7 +158,7 @@ fun viewColdFlowWithSubscribers() = runBlocking {
     }
 
     println("${mark("3")} wait for 500ms")
-    delay(500)
+    delay(500.milliseconds)
 
     println("${mark("4")} launch consumer 2 (same 'flow' from beginning)")
     launch {
@@ -198,7 +199,7 @@ fun viewHotFlowWithSubscribers() = runBlocking {
     fun dataFromFlow() = flow {
         println("${mark("a", currentCoroutineContext())} . flow is started")
         for (i in 1..4) {
-            delay(200)
+            delay(200.milliseconds)
             println("${mark("v", currentCoroutineContext())} . emit $i")
             emit(i)
         }
@@ -220,14 +221,14 @@ fun viewHotFlowWithSubscribers() = runBlocking {
     }
 
     println("${mark("3")} wait for 500ms")
-    delay(500)
+    delay(500.milliseconds)
 
     println("${mark("4")} launch consumer 2 (same 'flow')")
     val job2 = launch {
         flow.collect { println("${mark("d", currentCoroutineContext())} . consumer 2, value: $it") }
     }
     println("${mark("5")} wait for all consumers (runBlocking)")
-    delay(500)
+    delay(500.milliseconds)
 
     job1.cancelAndJoin()
     job2.cancelAndJoin()
@@ -265,7 +266,7 @@ fun viewStateFlowWithObservers() = runBlocking {
     fun dataFromFlow() = flow {
         println("${mark("a", currentCoroutineContext())} . flow is started")
         for (i in 1..4) {
-            delay(200)
+            delay(200.milliseconds)
             println("${mark("b", currentCoroutineContext())} . emit $i")
             emit(i)
         }
@@ -285,7 +286,7 @@ fun viewStateFlowWithObservers() = runBlocking {
     }
 
     println("${mark("3")} wait for 500ms")
-    delay(500)
+    delay(500.milliseconds)
 
     println("${mark("4")} launch consumer 2 (same 'flow')")
     val job2 = launch {
@@ -293,7 +294,7 @@ fun viewStateFlowWithObservers() = runBlocking {
     }
     println("${mark("5")} current state: ${flow.value}")
     println("${mark("6")} wait for all consumers (runBlocking)")
-    delay(500)
+    delay(500.milliseconds)
     println("${mark("7")} current state: ${flow.value}")
 
     job1.cancelAndJoin()

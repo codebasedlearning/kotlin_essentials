@@ -9,6 +9,7 @@ This snippet introduces coroutines and suspending functions with async.
 
 import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
+import kotlin.time.Duration.Companion.milliseconds
 
 fun main() {
     println("Kotlin Essentials -> Concurrency | Async")
@@ -37,13 +38,13 @@ fun introduceAsync() = runBlocking {
     println("\n[Async]\n---")
 
     suspend fun calcFirstResult(): Int {
-        delay(1000L)                                            // pretend we are doing something useful here
+        delay(1000L.milliseconds)                                            // pretend we are doing something useful here
         println(" a| . calcFirstResult done")
         return 13
     }
 
     suspend fun calcSecondResult(): Int {
-        delay(1000L)                                            // pretend we are doing something useful here, too
+        delay(1000L.milliseconds)                                            // pretend we are doing something useful here, too
         println(" b| . calcSecondResult done")
         return 29
     }
