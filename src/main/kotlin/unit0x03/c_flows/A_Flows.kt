@@ -66,7 +66,7 @@ fun motivateFlows() {
     // V2: compute numbers one by one using sequences
     // + little memory
     // - blocking
-    fun dataFromSequence() = sequence { (0..2).forEach { yield(readTemperature()) } }  // create one by one
+    fun dataFromSequence() = sequence { repeat(3) { yield(readTemperature()) } }  // create one by one
 
     print(" 2| dataFromSequence:    [")
     dataFromSequence().forEach { process(it) }
@@ -90,11 +90,11 @@ fun motivateFlows() {
     // V4: compute one by one using flows (and flow builders), compare with sequence above
     // + little memory
     // + non-blocking
-    fun dataFromFlow() = flow { (0..2).forEach { emit(dataOfAsync()) } }
+    fun dataFromFlow() = flow { repeat(3) { emit(dataOfAsync()) } }     // emit suspends
 
     print(" 4| dataFromFlow:        [")
     runBlocking {
-        dataFromFlow().collect { process(it) }
+        dataFromFlow().collect { process(it) }                  // also suspends
     }
     println(" ]")
 }
@@ -230,6 +230,8 @@ fun viewHotFlowWithSubscribers() = runBlocking {
     println("${mark("5")} wait for all consumers (runBlocking)")
     delay(500.milliseconds)
 
+    // Importantly, the upstream sharing coroutine does not stop automatically when the last subscriber disappears.
+
     job1.cancelAndJoin()
     job2.cancelAndJoin()
 }
@@ -249,14 +251,6 @@ fun viewHotFlowWithSubscribers() = runBlocking {
   - https://developer.android.com/jetpack/compose/documentation
   - https://developer.android.com/jetpack/compose/kotlin
 */
-class CounterModel {
-    val count: StateFlow<Int>                                   // public: a read-only StateFlow
-        field = MutableStateFlow(0)                             // explicit backing field (Kotlin 2.4)
-
-    fun increment() {
-        count.value++                                           // inside the class: a MutableStateFlow
-    }
-}
 
 fun viewStateFlowWithObservers() = runBlocking {
     println("\n[State Flow with Subscribers]\n---")
@@ -273,6 +267,7 @@ fun viewStateFlowWithObservers() = runBlocking {
     }
 
     println("${mark("1")} obtain flow from flow builder")
+
     // stateIn launches a coroutine (in this scope) responsible to share data to subscribers, similar to shareFlow;
     // flow is of type StateFlow;
     // flow has always a (latest) value (or initialValue)
@@ -299,6 +294,15 @@ fun viewStateFlowWithObservers() = runBlocking {
 
     job1.cancelAndJoin()
     job2.cancelAndJoin()
+
+    class CounterModel {
+        val count: StateFlow<Int>                                   // public: a read-only StateFlow
+            field = MutableStateFlow(0)                             // explicit backing field (Kotlin 2.4)
+
+        fun increment() {
+            count.value++                                           // inside the class: a MutableStateFlow
+        }
+    }
 
     val model = CounterModel()
     model.increment()

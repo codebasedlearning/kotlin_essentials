@@ -90,7 +90,7 @@ fun introduceCoroutines() {
         launch(Dispatchers.Default) {   // coro Alan
             println("${mark("a", coroutineContext)} started (in '${Thread.currentThread().name}')") // or currentCoroutineContext()
             repeat(3) {
-                // Thread.sleep(100L) would block, delay(100L) suspends
+                // Thread.sleep(100L) would block, delay(100L or 100.milliseconds) suspends
                 delay(100L.milliseconds)
                 println("${mark("b", coroutineContext)} - after sleep (in ${Thread.currentThread().name})")
             }
@@ -201,7 +201,7 @@ fun introduceSuspendingFunctions() {
     }
 
     println("${mark("1")} before blocking")
-    runBlocking {
+    runBlocking(Dispatchers.Default) {
         // doSomeWork400() without launch is just a call: it suspends this coroutine until it is done (sequential),
         // but it does not block the thread
         println("${mark("2")} launch coroutine in ${threadName()}")
@@ -289,7 +289,7 @@ Care for your children.
   - New coroutines usually need to be started inside a scope.
   - When launch, async, or runBlocking are used to start a new coroutine, they automatically
     create the corresponding scope.
-  - 'GlobalScope' is a global 'CoroutineScope' - see More.
+  - 'GlobalScope' is a global 'CoroutineScope'.
   Ref.:
   - https://kotlinlang.org/docs/coroutines-and-channels.html#structured-concurrency
   - https://kotlinlang.org/docs/exception-handling.html#coroutineexceptionhandler
@@ -397,6 +397,8 @@ fun discussConcurrency() {
         new coroutines that inherit the context of the scope but primarily manages the overall coroutine lifecycle.
         The scope itself doesn't specify how and where the coroutine will run, but rather, it uses
         the CoroutineContext for that configuration. So, yes.
+        Note, the measured time seems shorter than the time from V2, but this is an unknown effect. You can
+        experiment with different orders of V2 and V5 to see the impact on performance.
 */
 
 /*--- Compare to Threads --- This function is structural comparable to the introduceThreads() function. */
@@ -449,10 +451,9 @@ Impressive, do that with threads.
 fun moreOnCoroutines() {
     println("\n[More on Coroutines]\n---")
 
-    // todo - use ConcurrencyInfo
-    val time = TimeSource.Monotonic.markNow()
+    val mark = ConcurrencyInfo()
 
-    println(" 1| ${time.elapsed()} | start 1000 coroutines and let them work for 0.1s")
+    println("${mark("1")} start 1000 coroutines and let them work for 0.1s")
     runBlocking {
         repeat(1000) { // launch a lot of coroutines
             launch {
@@ -461,7 +462,7 @@ fun moreOnCoroutines() {
             }
         }
     }
-    println("\n 2| ${time.elapsed()} | done")
+    println("\n${mark("2")} done")
 }
 
 /*--- More on Virtual Threads ---
@@ -478,22 +479,23 @@ Since Java 21 the JVM has 'virtual threads' (Project Loom): lightweight threads 
 fun moreOnVirtualThreads() {
     println("\n[More on Virtual Threads]\n---")
 
-    val time = TimeSource.Monotonic.markNow()
-    println(" 1| ${time.elapsed()} | start 10_000 virtual threads, each blocks for 0.1s")
-    val threads = List(10_000) {
+    val mark = ConcurrencyInfo()
+
+    println("${mark("1")} start 1000 virtual threads, each blocks for 0.1s")
+    val threads = List(1000) {
         Thread.ofVirtual().start { Thread.sleep(100) }          // a classical blocking call
     }
     threads.forEach { it.join() }
-    println(" 2| ${time.elapsed()} | done")
 
+    println("${mark("2")} done")
     Executors.newVirtualThreadPerTaskExecutor().asCoroutineDispatcher().use { loom ->
-        println(" 3| ${time.elapsed()} | start 10_000 coroutines on virtual threads, each blocks for 0.1s")
+        println("${mark("3")} start 1000 coroutines on virtual threads, each blocks for 0.1s")
         runBlocking {
-            repeat(10_000) {
+            repeat(1000) {
                 launch(loom) { Thread.sleep(100) }              // blocks, but only a virtual thread waits
             }
         }
-        println(" 4| ${time.elapsed()} | done")
+        println("${mark("4")} done")
     }
 }
 
@@ -508,7 +510,7 @@ fun moreOnVirtualThreads() {
 fun moreOnExceptionsAndGlobalScope() {
     println("\n[More on Exceptions and GlobalScope]\n---")
 
-    // todo - use ConcurrencyInfo
+    val mark = ConcurrencyInfo()
 
     // define an exception handler for GlobalScope coroutines
     // note that they usually cannot be caught in try-catch, which is the usual approach
@@ -516,12 +518,14 @@ fun moreOnExceptionsAndGlobalScope() {
         println("CoroutineExceptionHandler: got $exception, log it")
     }
 
+    println("${mark("1")} launch in GlobalScope")
+
     GlobalScope.launch(handler) {
-        println(" 1| coroutine launched")
+        println("${mark("2")} coroutine launched")
         throw RuntimeException("a serious error")
     }
     Thread.sleep(500L)
-    println(" 2| end of program")
+    println("${mark("3")} end of function")
 }
 
 /*--- More on File IO ---
@@ -532,6 +536,8 @@ Blocking I/O in a coroutine.
 */
 fun moreOnFileIO() {
     println("\n[More on File IO]\n---")
+
+    val mark = ConcurrencyInfo()
 
     suspend fun loadFile(filePath: String): Result<String> = withContext(Dispatchers.IO) {
         try {
@@ -547,10 +553,10 @@ fun moreOnFileIO() {
     }
 
     runBlocking {
-        for (path in listOf("build.gradle.kts", "/path/to/my/file.txt")) {
+        for (path in listOf("build.gradle.kts", "/path/to/some/non-existing-file.txt")) {
             loadFile(path).fold(
-                onSuccess = { content -> println(" 1| '$path': ${content.lines().size} lines") },
-                onFailure = { exception -> println(" 2| '$path': failed with '${exception.message}'") }
+                onSuccess = { content -> println("${mark("1")} '$path': ${content.lines().size} lines") },
+                onFailure = { exception -> println("${mark("2")} '$path': failed with '${exception.message}'") }
             )
         }
     }

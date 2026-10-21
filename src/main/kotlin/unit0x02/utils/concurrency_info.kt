@@ -11,17 +11,17 @@ data class ConcurrencyData(
     val name: String,
     val color: TerminalColor,
     val indent: Int,
-    val indentStr: String = " ".repeat(indent),
+    val indentStr: String = if (indent>0) " "+".".repeat(indent) else "",
     val start: TimeSource.Monotonic.ValueTimeMark = TimeSource.Monotonic.markNow())
 
 class ConcurrencyInfo(private val valueNow: TimeSource.Monotonic.ValueTimeMark = TimeSource.Monotonic.markNow()) {
     companion object {
         private val niceNames = listOf(
             ConcurrencyData("Main",TerminalColor.Cyan,0),
-            ConcurrencyData("Alan",TerminalColor.Red,11),
-            ConcurrencyData("Beth",TerminalColor.Blue,22),
-            ConcurrencyData("Carl",TerminalColor.Green,33),
-            ConcurrencyData("Dana",TerminalColor.Cyan,44)
+            ConcurrencyData("Alan",TerminalColor.Red,2),    // 11
+            ConcurrencyData("Beth",TerminalColor.Blue,4),   // 22
+            ConcurrencyData("Carl",TerminalColor.Green,6),  // 33
+            ConcurrencyData("Dana",TerminalColor.Cyan,8)    // 44
         )
     }
     private val nameToData = ConcurrentHashMap<String, ConcurrencyData>()
@@ -44,9 +44,9 @@ class ConcurrencyInfo(private val valueNow: TimeSource.Monotonic.ValueTimeMark =
         val saved = getOrStoreData(name)
         val marker = "${text.padStart(2)}|".paintIn(saved.color)
         val elapsed = "${valueNow.elapsed()}|"
-        val indent = saved.indentStr
+        val indent = saved.indentStr.paintIn(saved.color)
         val ms = saved.start.let { "${saved.name} ${it.elapsed()}|" }.paintIn(saved.color)
-        return  "$marker $elapsed $indent$ms"
+        return  "$marker $elapsed$ms$indent"
     }
 }
 

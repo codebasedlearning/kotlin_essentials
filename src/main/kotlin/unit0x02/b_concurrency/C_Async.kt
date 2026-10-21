@@ -8,6 +8,7 @@ This snippet introduces coroutines and suspending functions with async.
 */
 
 import kotlinx.coroutines.*
+import unit0x02.utils.ConcurrencyInfo
 import kotlin.system.measureTimeMillis
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -37,44 +38,46 @@ Give it back to me.
 fun introduceAsync() = runBlocking {
     println("\n[Async]\n---")
 
+    val mark = ConcurrencyInfo()
+
     suspend fun calcFirstResult(): Int {
         delay(1000L.milliseconds)                                            // pretend we are doing something useful here
-        println(" a| . calcFirstResult done")
+        println("${mark("a")} - calcFirstResult done")
         return 13
     }
 
     suspend fun calcSecondResult(): Int {
         delay(1000L.milliseconds)                                            // pretend we are doing something useful here, too
-        println(" b| . calcSecondResult done")
+        println("${mark("b")} - calcSecondResult done")
         return 29
     }
 
     var sum = 0
 
-    println(" 1| start calculations (sequential)")
+    println("${mark("1")} start calculations (sequential)")
     measureTimeMillis {
         val n1 = calcFirstResult()
         val n2 = calcSecondResult()
         sum = n1 + n2
-    }.let { println(" 2| done after ${it}ms, sum=$sum\n") }
+    }.let { println("${mark("2")} done after ${it}ms, sum=$sum\n") }
 
     // The structure of this asynchronous code is very similar to synchronous code,
     // which is one of the main advantages of this approach.
     // Compare it with other strategies such as callbacks when something is done
     // (callback hell).
-    println(" 3| start calculations (asynchronous)")
+    println("${mark("3")} start calculations (asynchronous)")
     measureTimeMillis {
         val n1 = async { calcFirstResult() }                    // type Deferred<Int>
         val n2 = async { calcSecondResult() }
         sum = n1.await() + n2.await()
-    }.let { println(" 4| done after ${it}ms, sum=$sum\n") }
+    }.let { println("${mark("4")} done after ${it}ms, sum=$sum\n") }
 
-    println(" 5| start a list of calculations (asynchronous)")
+    println("${mark("5")} start a list of calculations (asynchronous)")
     measureTimeMillis {
         val futures = listOf(
             async { calcFirstResult() },
             async { calcSecondResult() }
         )
         sum = futures.awaitAll().sum()
-    }.let { println(" 6| done after ${it}ms, sum=$sum\n") }
+    }.let { println("${mark("6")} done after ${it}ms, sum=$sum\n") }
 }
